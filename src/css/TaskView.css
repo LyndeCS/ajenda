@@ -18,3 +18,8 @@ h2 {
 	bottom: 0;
 	width: 33vw;
 }
+
+button {
+	margin-left: 42px !important;
+	margin-top: 1em !important;
+}
