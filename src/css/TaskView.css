@@ -1,0 +1,15 @@
+.task-container {
+	width: 25em;
+	min-height: 25em;
+}
+
+h1,
+h2 {
+	font-family: "Quicksand", sans-serif;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}

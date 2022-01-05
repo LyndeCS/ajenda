@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import TaskView from "./TaskView";
+import { nanoid } from "nanoid";
+
+const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [tasks, setTasks] = useState([]);
+
+	function addTask(desc) {
+		const newTask = {
+			id: "task-" + nanoid(),
+			desc: desc,
+			completed: false,
+			category: "unscheduled",
+		};
+		setTasks([...tasks, newTask]);
+	}
+
+	function saveTask(id, desc) {
+		const updatedTasks = tasks.map((task) => {
+			if (id === task.id) {
+				return { ...task, desc: desc };
+			}
+			return task;
+		});
+		setTasks(updatedTasks);
+	}
+
+	function completeTask(id) {
+		const updatedTasks = tasks.map((task) => {
+			if (id === task.id) {
+				return { ...task, completed: !task.completed };
+			}
+			return task;
+		});
+		setTasks(updatedTasks);
+	}
+
+	function deleteTask(id) {
+		if (window.confirm("Delete?")) {
+			setTasks(tasks.filter((task) => task.id !== id));
+		}
+	}
+
+	function sortTasks() {
+		const incompleteTasks = tasks.filter((task) => !task.completed);
+		const completedTasks = tasks.filter((task) => task.completed);
+		const sortedTasks = [...incompleteTasks, ...completedTasks];
+		setTasks(sortedTasks);
+	}
+
+	// todo: decompose local storage functions
+	useEffect(() => {
+		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+		if (storedTasks) setTasks(storedTasks);
+	}, []);
+	useEffect(() => {
+		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+	}, [tasks]);
+
+	return (
+		<div className="App">
+			<TaskView
+				tasks={tasks}
+				addTask={addTask}
+				deleteTask={deleteTask}
+				saveTask={saveTask}
+				completeTask={completeTask}
+				sortTasks={sortTasks}
+			/>
+		</div>
+	);
 }
 
 export default App;

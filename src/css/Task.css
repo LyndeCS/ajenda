@@ -1,0 +1,12 @@
+.task {
+	font-size: 2em;
+	font-family: "Quicksand", sans-serif;
+	list-style-type: none;
+	margin: 0.1em 0px;
+	display: flex;
+	background-color: white;
+}
+
+.completed-true {
+	text-decoration: line-through;
+}
