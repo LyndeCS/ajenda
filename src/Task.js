@@ -26,6 +26,7 @@ function Task(props) {
 							color: "#00BE91",
 						},
 					}}
+					checked={props.completed ? true : false}
 					onClick={() => props.completeTask(props.id)}
 				/>
 				<div
@@ -54,6 +55,7 @@ function Task(props) {
 						color: "#00BE91",
 					},
 				}}
+				checked={props.completed ? true : false}
 				onClick={() => props.completeTask(props.id)}
 			/>
 			<div

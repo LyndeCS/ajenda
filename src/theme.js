@@ -25,6 +25,7 @@ const theme = createTheme({
 		button: {
 			textTransform: "none",
 			fontWeight: 300,
+			fontFamily: "Quicksand",
 		},
 	},
 });

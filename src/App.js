@@ -30,7 +30,11 @@ function App() {
 	function completeTask(id) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
-				return { ...task, completed: !task.completed };
+				return {
+					...task,
+					completed: !task.completed,
+					category: !task.completed ? "completed" : task.category,
+				};
 			}
 			return task;
 		});

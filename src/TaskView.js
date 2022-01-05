@@ -83,8 +83,8 @@ function TaskView(props) {
 		<div className="task-container">
 			<div className="header">
 				<h1>Tasks</h1>
-				<Divider />
 			</div>
+			<Divider />
 			<h2>Past</h2>
 			{pastTasks}
 			<h2>Unscheduled</h2>

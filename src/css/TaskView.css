@@ -1,6 +1,6 @@
 .task-container {
-	width: 25em;
-	min-height: 25em;
+	width: 33vw;
+	height: 100vh;
 }
 
 h1,
@@ -8,8 +8,13 @@ h2 {
 	font-family: "Quicksand", sans-serif;
 }
 
+.header {
+	display: flex;
+	justify-content: space-around;
+}
+
 .footer {
 	position: fixed;
 	bottom: 0;
-	width: 100%;
+	width: 33vw;
 }
