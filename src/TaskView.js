@@ -4,9 +4,17 @@ import { Divider, Button, ThemeProvider } from "@mui/material";
 import "./css/TaskView.css";
 import theme from "./theme";
 
+const GROUPS_DEFAULT = [
+	{ name: "past", collapsed: false },
+	{ name: "unscheduled", collapsed: false },
+	{ name: "scheduled", collapsed: true },
+	{ name: "completed", collapsed: true },
+];
+
 function TaskView(props) {
 	const [input, setInput] = useState("");
 	const [isEditing, setEditing] = useState(false);
+	const [groups, setGroups] = useState(GROUPS_DEFAULT);
 
 	function handleChange(e) {
 		setInput(e.target.value);
@@ -21,6 +29,21 @@ function TaskView(props) {
 	function createTask() {
 		props.addTask("");
 		setEditing(true);
+	}
+
+	function handleGroups(e) {
+		console.log(e.target.className);
+		const updatedGroups = groups.map((group) => {
+			if (group.name === e.target.className) {
+				return {
+					...group,
+					collapsed: !group.collapsed,
+				};
+			}
+			return group;
+		});
+		console.log(groups);
+		setGroups(updatedGroups);
 	}
 
 	const pastTasks = props.tasks
@@ -85,10 +108,10 @@ function TaskView(props) {
 				<h1>Tasks</h1>
 			</div>
 			<Divider />
-			<h2>Past</h2>
-			{pastTasks}
-			<h2>Unscheduled</h2>
-			{unscheduledTasks}
+			<h2 className="past">Past</h2>
+			<ul className={"expanded"}>{pastTasks}</ul>
+			<h2 className="unscheduled">Unscheduled</h2>
+			<ul className={"expanded"}>{unscheduledTasks}</ul>
 			<ThemeProvider theme={theme}>
 				<Button variant="contained" color="primary" onClick={createTask}>
 					Add Task
@@ -96,10 +119,14 @@ function TaskView(props) {
 			</ThemeProvider>
 			<div className="footer">
 				<Divider />
-				<h2>Scheduled</h2>
-				{scheduledTasks}
-				<h2>Completed</h2>
-				{completedTasks}
+				<h2 className="scheduled" onClick={handleGroups}>
+					Scheduled
+				</h2>
+				<ul className={"expanded"}>{scheduledTasks}</ul>
+				<h2 className="completed" onClick={handleGroups}>
+					Completed
+				</h2>
+				<ul className={"expanded"}>{completedTasks}</ul>
 			</div>
 		</div>
 	);

@@ -54,7 +54,6 @@ function App() {
 		setTasks(sortedTasks);
 	}
 
-	// todo: decompose local storage functions
 	useEffect(() => {
 		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 		if (storedTasks) setTasks(storedTasks);

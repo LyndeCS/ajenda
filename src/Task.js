@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./css/Task.css";
-import { Checkbox, TextField } from "@mui/material";
+import { Checkbox, TextField, Button, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Task(props) {
 	const [isEditing, setEditing] = useState(props.desc === "" ? true : false);
@@ -43,6 +44,13 @@ function Task(props) {
 					onChange={handleChange}
 				/>
 			</form>
+			<IconButton
+				aria-label="delete"
+				className="delete-button"
+				onClick={() => props.deleteTask(props.id)}
+			>
+				<DeleteIcon className="delete-icon" />
+			</IconButton>
 		</li>
 	);
 
@@ -67,10 +75,17 @@ function Task(props) {
 			>
 				{props.desc}
 			</div>
+			<IconButton
+				aria-label="delete"
+				className="delete-button"
+				onClick={() => props.deleteTask(props.id)}
+			>
+				<DeleteIcon className="delete-icon" />
+			</IconButton>
 		</li>
 	);
 
-	return isEditing ? editingTemplate : viewTemplate; //todo: remove redundant html tags in templates
+	return isEditing ? editingTemplate : viewTemplate;
 }
 
 export default Task;

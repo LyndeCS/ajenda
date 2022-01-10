@@ -1,6 +1,9 @@
 .task-container {
 	width: 33vw;
 	height: 100vh;
+	border-right: solid;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.12);
 }
 
 h1,
@@ -22,4 +25,16 @@ h2 {
 button {
 	margin-left: 42px !important;
 	margin-top: 1em !important;
+}
+
+ul {
+	padding: 0;
+}
+
+.collapsed {
+	display: none;
+}
+
+.expanded {
+	display: block;
 }

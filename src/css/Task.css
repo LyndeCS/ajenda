@@ -16,3 +16,19 @@ li {
 form {
 	display: flex;
 }
+
+.delete-button {
+	display: none !important;
+}
+
+.task:hover .delete-button {
+	display: flex !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	margin-left: auto !important;
+	margin-right: 0.5em !important;
+}
+
+.task:hover {
+	background-color: rgba(0, 0, 0, 0.04);
+}
