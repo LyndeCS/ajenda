@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import TaskView from "./TaskView";
+import ScheduleView from "./ScheduleView";
 import { nanoid } from "nanoid";
+import "./css/App.css";
 
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
@@ -72,6 +74,7 @@ function App() {
 				completeTask={completeTask}
 				sortTasks={sortTasks}
 			/>
+			<ScheduleView />
 		</div>
 	);
 }

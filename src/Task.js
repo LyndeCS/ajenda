@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./css/Task.css";
-import { Checkbox, TextField, Button, IconButton } from "@mui/material";
+import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 function Task(props) {

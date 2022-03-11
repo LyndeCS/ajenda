@@ -1,8 +1,16 @@
 .task {
-	font-size: 2em;
+	font-size: 1.2em;
 	font-family: "Quicksand", sans-serif;
 	display: flex;
 	background-color: white;
+	word-wrap: break-word;
+	margin: auto;
+}
+
+.task-desc {
+	margin: auto;
+	margin-left: 0;
+	font-size: 1.2em;
 }
 
 .completed-true {

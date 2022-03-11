@@ -35,14 +35,6 @@ function TaskView(props) {
 		setGroups(updatedGroups);
 	}
 
-	function handleCollapse(groupName) {
-		for (let group in groups) {
-			if (group.name === groupName) {
-				return group.collapsed ? "collapsed" : "expanded";
-			}
-		}
-	}
-
 	const headerTaskGroups = groups
 		.filter((group) => group.section === "header")
 		.map((group) => (
@@ -75,19 +67,22 @@ function TaskView(props) {
 
 	return (
 		<div className="task-container">
-			<div className="header">
+			<div className="task-header">
 				<h1>Tasks</h1>
 			</div>
 			<Divider />
-			{headerTaskGroups}
 
-			<ThemeProvider theme={theme}>
-				<Button variant="contained" color="primary" onClick={createTask}>
-					Add Task
-				</Button>
-			</ThemeProvider>
+			<div className="task-body">
+				{headerTaskGroups}
 
-			<div className="footer">
+				<ThemeProvider theme={theme}>
+					<Button variant="contained" color="primary" onClick={createTask}>
+						Add Task
+					</Button>
+				</ThemeProvider>
+			</div>
+
+			<div className="task-footer">
 				<Divider />
 				{footerTaskGroups}
 			</div>
