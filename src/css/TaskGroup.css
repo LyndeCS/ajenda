@@ -1,0 +1,7 @@
+.TaskGroup {
+}
+
+.taskgroup-header {
+	display: flex;
+	justify-content: space-between;
+}

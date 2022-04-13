@@ -5,6 +5,7 @@
 	background-color: white;
 	word-wrap: break-word;
 	margin: auto;
+	padding-left: 0.4em;
 }
 
 .task-desc {
