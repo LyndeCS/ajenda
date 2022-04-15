@@ -1,7 +1,12 @@
 .TaskGroup {
+	margin-top: 1em;
 }
 
 .taskgroup-header {
 	display: flex;
 	justify-content: space-between;
+}
+
+.taskgroup-header:hover {
+	cursor: pointer;
 }

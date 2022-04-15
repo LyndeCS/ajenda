@@ -5,6 +5,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 function TaskGroup(props) {
+	//fixme
 	const [isCollapsed, setCollapsed] = useState(props.collapsed);
 
 	const tasks = props.tasks
@@ -25,11 +26,13 @@ function TaskGroup(props) {
 		props.name.slice(0, 1).toUpperCase() +
 		props.name.slice(1, props.name.length);
 
-	//create 2 taskgroup templates for collapsed/expanded and add uparrow/downarrow icons
-	//add onhover point cursor
 	const collapsedTemplate = (
 		<div className="TaskGroup">
-			<div className="taskgroup-header" onClick={props.handleGroups}>
+			<div
+				id={props.name}
+				className={"taskgroup-header"}
+				onClick={props.handleGroups}
+			>
 				<h2 className={props.name}>{name}</h2>
 				<ArrowDropDownIcon />
 			</div>
@@ -38,23 +41,19 @@ function TaskGroup(props) {
 
 	const expandedTemplate = (
 		<div className="TaskGroup">
-			<div className="taskgroup-header" onClick={props.handleGroups}>
-				<h2 className={props.name}>{name}</h2>
+			<div
+				id={props.name}
+				className={"taskgroup-header"}
+				onClick={props.handleGroups}
+			>
+				<h2>{name}</h2>
 				<ArrowDropUpIcon />
 			</div>
-			<ul className={"expanded"}>{tasks}</ul>
+			<ul>{tasks}</ul>
 		</div>
 	);
 
-	return (
-		// <div className="TaskGroup">
-		// 	<h2 className={props.name} onClick={props.handleGroups}>
-		// 		{name}
-		// 	</h2>
-		// 	<ul className={props.collapsed ? "collapsed" : "expanded"}>{tasks}</ul>
-		// </div>
-		<>{isCollapsed ? collapsedTemplate : expandedTemplate}</>
-	);
+	return <>{isCollapsed ? collapsedTemplate : expandedTemplate}</>;
 }
 
 export default TaskGroup;

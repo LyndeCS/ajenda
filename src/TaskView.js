@@ -24,7 +24,7 @@ function TaskView(props) {
 
 	function handleGroups(e) {
 		const updatedGroups = groups.map((group) => {
-			if (group.name === e.target.className) {
+			if (group.name === e.currentTarget.id) {
 				return {
 					...group,
 					collapsed: !group.collapsed,
