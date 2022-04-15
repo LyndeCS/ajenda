@@ -26,6 +26,10 @@ function Task(props) {
 		}
 	}
 
+	function handleBlur(e) {
+		setEditing(false);
+	}
+
 	const editingTemplate = (
 		<li className="task">
 			<form onSubmit={handleSubmit}>
@@ -51,6 +55,8 @@ function Task(props) {
 					className="edit-task-input"
 					value={newDesc}
 					onChange={handleChange}
+					autoFocus
+					onBlur={handleBlur}
 				/>
 			</form>
 			<IconButton
