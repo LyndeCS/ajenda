@@ -17,6 +17,15 @@ function Task(props) {
 		setEditing(false);
 	}
 
+	function handleClick(e) {
+		// double click task to edit
+		switch (e.detail) {
+			case 2:
+				setEditing(true);
+				break;
+		}
+	}
+
 	const editingTemplate = (
 		<li className="task">
 			<form onSubmit={handleSubmit}>
@@ -55,7 +64,7 @@ function Task(props) {
 	);
 
 	const viewTemplate = (
-		<li className="task">
+		<li className="task" onClick={handleClick}>
 			<Checkbox
 				sx={{
 					color: "#00BE91",
