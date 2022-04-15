@@ -18,13 +18,25 @@ function TaskView(props) {
 	const [groups, setGroups] = useState(GROUPS_DEFAULT);
 
 	function createTask() {
+		// expand Unscheduled group if it is collapsed
+		if (
+			groups.find((group) => group.name === "unscheduled" && group.collapsed)
+		) {
+			handleGroups("unscheduled");
+		}
 		props.addTask("");
 		setEditing(true);
 	}
 
 	function handleGroups(e) {
+		let groupName;
+		if (typeof e === "string") {
+			groupName = e;
+		} else {
+			groupName = e.currentTarget.id;
+		}
 		const updatedGroups = groups.map((group) => {
-			if (group.name === e.currentTarget.id) {
+			if (group.name === groupName) {
 				return {
 					...group,
 					collapsed: !group.collapsed,
