@@ -59,6 +59,11 @@ function App() {
 		}
 	}
 
+	function countTasks(category) {
+		const count = tasks.filter((task) => task.category === category).length;
+		return count;
+	}
+
 	function sortTasks() {
 		const incompleteTasks = tasks.filter((task) => !task.completed);
 		const completedTasks = tasks.filter((task) => task.completed);
@@ -83,6 +88,7 @@ function App() {
 				saveTask={saveTask}
 				completeTask={completeTask}
 				sortTasks={sortTasks}
+				countTasks={countTasks}
 			/>
 			<ScheduleView />
 		</div>

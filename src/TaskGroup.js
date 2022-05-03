@@ -33,7 +33,9 @@ function TaskGroup(props) {
 				className={"taskgroup-header"}
 				onClick={props.handleGroups}
 			>
-				<h2 className={props.name}>{name}</h2>
+				<h2 className={props.name}>
+					{name} ({props.countTasks(props.name)})
+				</h2>
 				<ArrowDropDownIcon />
 			</div>
 		</div>
@@ -46,7 +48,9 @@ function TaskGroup(props) {
 				className={"taskgroup-header"}
 				onClick={props.handleGroups}
 			>
-				<h2>{name}</h2>
+				<h2>
+					{name} ({props.countTasks(props.name)})
+				</h2>
 				<ArrowDropUpIcon />
 			</div>
 			<ul>{tasks}</ul>

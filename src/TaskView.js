@@ -13,7 +13,6 @@ const GROUPS_DEFAULT = [
 ];
 
 function TaskView(props) {
-	const [input, setInput] = useState("");
 	const [groups, setGroups] = useState(GROUPS_DEFAULT);
 
 	function createTask() {
@@ -59,6 +58,7 @@ function TaskView(props) {
 				completeTask={props.completeTask}
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
+				countTasks={props.countTasks}
 			/>
 		));
 
@@ -74,6 +74,7 @@ function TaskView(props) {
 				completeTask={props.completeTask}
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
+				countTasks={props.countTasks}
 			/>
 		));
 
