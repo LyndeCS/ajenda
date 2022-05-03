@@ -23,6 +23,8 @@ function Task(props) {
 			case 2:
 				setEditing(true);
 				break;
+			default:
+				break;
 		}
 	}
 
