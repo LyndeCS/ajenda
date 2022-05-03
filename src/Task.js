@@ -56,6 +56,7 @@ function Task(props) {
 					}
 				></div>
 				<TextField
+					fullWidth
 					variant="standard"
 					className="edit-task-input"
 					value={newDesc}
