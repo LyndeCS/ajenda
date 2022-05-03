@@ -14,7 +14,6 @@ const GROUPS_DEFAULT = [
 
 function TaskView(props) {
 	const [input, setInput] = useState("");
-	const [isEditing, setEditing] = useState(false);
 	const [groups, setGroups] = useState(GROUPS_DEFAULT);
 
 	function createTask() {
@@ -24,8 +23,9 @@ function TaskView(props) {
 		) {
 			handleGroups("unscheduled");
 		}
+
+		// create task
 		props.addTask("");
-		setEditing(true);
 	}
 
 	function handleGroups(e) {

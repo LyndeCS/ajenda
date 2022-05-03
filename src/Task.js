@@ -4,8 +4,9 @@ import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 function Task(props) {
-	const [isEditing, setEditing] = useState(props.desc === "" ? true : false);
+	// add task button or double click should be only way to edit, one task at a time
 	const [newDesc, setNewDesc] = useState(props.desc);
+	const [isEditing, setEditing] = useState(props.desc ? false : true);
 
 	function handleChange(e) {
 		setNewDesc(e.target.value);
@@ -14,7 +15,6 @@ function Task(props) {
 	function handleSubmit(e) {
 		e.preventDefault();
 		props.saveTask(props.id, newDesc);
-		setEditing(false);
 	}
 
 	function handleClick(e) {
@@ -27,7 +27,12 @@ function Task(props) {
 	}
 
 	function handleBlur(e) {
-		setEditing(false);
+		if (newDesc) {
+			setEditing(false);
+			props.saveTask(props.id, newDesc);
+		} else {
+			props.deleteTask(props.id);
+		}
 	}
 
 	const editingTemplate = (

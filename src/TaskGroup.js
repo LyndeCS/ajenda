@@ -53,7 +53,7 @@ function TaskGroup(props) {
 		</div>
 	);
 
-	return <>{isCollapsed ? collapsedTemplate : expandedTemplate}</>;
+	return isCollapsed ? collapsedTemplate : expandedTemplate;
 }
 
 export default TaskGroup;

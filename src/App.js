@@ -44,7 +44,17 @@ function App() {
 	}
 
 	function deleteTask(id) {
-		if (window.confirm("Delete?")) {
+		const taskToDelete = tasks.find((task) => task.id === id);
+
+		// prompt to confirm delete if task has description
+		if (taskToDelete.desc) {
+			if (window.confirm("Delete?")) {
+				setTasks(tasks.filter((task) => task.id !== id));
+			}
+		}
+
+		// delete task without prompt if it has no description
+		else {
 			setTasks(tasks.filter((task) => task.id !== id));
 		}
 	}
