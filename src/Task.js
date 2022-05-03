@@ -63,6 +63,7 @@ function Task(props) {
 					onChange={handleChange}
 					autoFocus
 					onBlur={handleBlur}
+					color="grey"
 				/>
 			</form>
 			<IconButton
