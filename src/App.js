@@ -90,7 +90,7 @@ function App() {
 				sortTasks={sortTasks}
 				countTasks={countTasks}
 			/>
-			<ScheduleView />
+			<ScheduleView tasks={tasks} />
 		</div>
 	);
 }

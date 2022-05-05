@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./css/Task.css";
 import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ScheduleIcon from "@mui/icons-material/Schedule";
 
 function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
@@ -68,13 +69,22 @@ function Task(props) {
 					color="grey"
 				/>
 			</form>
-			<IconButton
-				aria-label="delete"
-				className="delete-button"
-				onClick={() => props.deleteTask(props.id)}
-			>
-				<DeleteIcon className="delete-icon" />
-			</IconButton>
+			<div className="task-button-container">
+				<IconButton
+					aria-label="schedule"
+					className="schedule-button"
+					onClick={() => props.scheduleTask(props.id)}
+				>
+					<ScheduleIcon className="schedule-icon" />
+				</IconButton>
+				<IconButton
+					aria-label="delete"
+					className="delete-button"
+					onClick={() => props.deleteTask(props.id)}
+				>
+					<DeleteIcon className="delete-icon" />
+				</IconButton>
+			</div>
 		</li>
 	);
 
@@ -99,13 +109,22 @@ function Task(props) {
 			>
 				{props.desc}
 			</div>
-			<IconButton
-				aria-label="delete"
-				className="delete-button"
-				onClick={() => props.deleteTask(props.id)}
-			>
-				<DeleteIcon className="delete-icon" />
-			</IconButton>
+			<div className="task-button-container">
+				<IconButton
+					aria-label="schedule"
+					className="schedule-button"
+					onClick={() => props.scheduleTask(props.id)}
+				>
+					<ScheduleIcon className="schedule-icon" />
+				</IconButton>
+				<IconButton
+					aria-label="delete"
+					className="delete-button"
+					onClick={() => props.deleteTask(props.id)}
+				>
+					<DeleteIcon className="delete-icon" />
+				</IconButton>
+			</div>
 		</li>
 	);
 

@@ -27,7 +27,7 @@ form {
 	width: 88%;
 }
 
-.delete-button {
+/* .delete-button {
 	display: none !important;
 }
 
@@ -37,7 +37,31 @@ form {
 	margin-bottom: 0 !important;
 	margin-left: auto !important;
 	margin-right: 0.5em !important;
+} */
+
+/* .task-buttons {
+	display: none !important;
+} */
+
+.task-button-container {
+		display: flex !important;
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		margin-left: auto !important;
+		margin-right: 0.5em !important;
+		float: right !important;
+		padding: 0 !important;
+		width: 50% !important;
+		height: 100% !important;
 }
+
+/* .delete-button {
+	display: block !important;
+}
+
+.schedule-button {
+	display: block !important;
+} */
 
 .task:hover {
 	background-color: rgba(0, 0, 0, 0.04);
