@@ -15,18 +15,26 @@ const currentDate = new Date();
 const currentHour = currentDate.getHours();
 
 function ScheduleView(props) {
-	const schedulerData = [
-		{
-			startDate: "2018-11-01T09:45",
-			endDate: "2018-11-01T11:00",
-			title: "Meeting",
-		},
-		{
-			startDate: "2018-11-01T12:00",
-			endDate: "2018-11-01T13:30",
-			title: "Go to a gym",
-		},
-	];
+	const schedulerData = props.tasks.map((task) => {
+		return {
+			startDate: task.startDate,
+			endDate: task.endDate,
+			title: task.desc,
+		};
+	});
+
+	// const schedulerData = [
+	// 	{
+	// 		startDate: currentDate,
+	// 		endDate: currentDate,
+	// 		title: "Meeting",
+	// 	},
+	// 	{
+	// 		startDate: currentDate,
+	// 		endDate: currentDate,
+	// 		title: "Go to a gym",
+	// 	},
+	// ];
 
 	return (
 		<div className="schedule-container">

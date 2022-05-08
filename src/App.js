@@ -6,6 +6,8 @@ import "./css/App.css";
 
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
+const currentDate = new Date();
+
 function App() {
 	const [tasks, setTasks] = useState([]);
 
@@ -15,6 +17,8 @@ function App() {
 			desc: desc,
 			completed: false,
 			category: "unscheduled",
+			startDate: "",
+			endDate: "",
 		};
 		setTasks([...tasks, newTask]);
 	}
@@ -64,6 +68,10 @@ function App() {
 		return count;
 	}
 
+	function scheduleTask(input) {
+		console.log(input);
+	}
+
 	function sortTasks() {
 		const incompleteTasks = tasks.filter((task) => !task.completed);
 		const completedTasks = tasks.filter((task) => task.completed);
@@ -89,6 +97,7 @@ function App() {
 				completeTask={completeTask}
 				sortTasks={sortTasks}
 				countTasks={countTasks}
+				scheduleTask={scheduleTask}
 			/>
 			<ScheduleView tasks={tasks} />
 		</div>

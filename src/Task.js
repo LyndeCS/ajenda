@@ -3,6 +3,7 @@ import "./css/Task.css";
 import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
@@ -36,6 +37,11 @@ function Task(props) {
 		} else {
 			props.deleteTask(props.id);
 		}
+	}
+
+	function handleSchedule(e) {
+		// open datepicker
+		// send datepicker info to props.scheduleTask
 	}
 
 	const editingTemplate = (
@@ -73,7 +79,7 @@ function Task(props) {
 				<IconButton
 					aria-label="schedule"
 					className="schedule-button"
-					onClick={() => props.scheduleTask(props.id)}
+					onClick={() => handleSchedule(props.id)}
 				>
 					<ScheduleIcon className="schedule-icon" />
 				</IconButton>
@@ -113,7 +119,7 @@ function Task(props) {
 				<IconButton
 					aria-label="schedule"
 					className="schedule-button"
-					onClick={() => props.scheduleTask(props.id)}
+					onClick={() => handleSchedule(props.id)}
 				>
 					<ScheduleIcon className="schedule-icon" />
 				</IconButton>
