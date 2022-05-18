@@ -4,11 +4,21 @@ import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import DateTimePicker from "@mui/x-date-pickers/DateTimePicker";
 
 function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
 	const [newDesc, setNewDesc] = useState(props.desc);
 	const [isEditing, setEditing] = useState(props.desc ? false : true);
+
+	// fixme: DatePicker separated from Task.js
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [datePickerDialog, setDatePickerDialog] = useState();
+
+	function handleSchedule(e) {
+		// open datepicker
+		// send datepicker info to props.scheduleTask
+	}
 
 	function handleChange(e) {
 		setNewDesc(e.target.value);
@@ -37,11 +47,6 @@ function Task(props) {
 		} else {
 			props.deleteTask(props.id);
 		}
-	}
-
-	function handleSchedule(e) {
-		// open datepicker
-		// send datepicker info to props.scheduleTask
 	}
 
 	const editingTemplate = (
