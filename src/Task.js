@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import DateTimePicker from "@mui/x-date-pickers/DateTimePicker";
+import LocalizationProvider from "@mui/x-date-pickers/LocalizationProvider";
 
 function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
@@ -12,12 +13,14 @@ function Task(props) {
 	const [isEditing, setEditing] = useState(props.desc ? false : true);
 
 	// fixme: DatePicker separated from Task.js
+	const [openDateTimePicker, setOpenDateTimePicker] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [datePickerDialog, setDatePickerDialog] = useState();
 
 	function handleSchedule(e) {
 		// open datepicker
 		// send datepicker info to props.scheduleTask
+		setOpenDateTimePicker((isOpen) => !isOpen);
 	}
 
 	function handleChange(e) {
@@ -121,13 +124,16 @@ function Task(props) {
 				{props.desc}
 			</div>
 			<div className="task-button-container">
-				<IconButton
-					aria-label="schedule"
-					className="schedule-button"
-					onClick={() => handleSchedule(props.id)}
-				>
-					<ScheduleIcon className="schedule-icon" />
-				</IconButton>
+				<LocalizationProvider dateAdapter={AdapterDateFns}>
+					<IconButton
+						aria-label="schedule"
+						className="schedule-button"
+						onClick={() => handleSchedule(props.id)}
+					>
+						<ScheduleIcon className="schedule-icon" />
+					</IconButton>
+					<DateTimePicker open={openDateTimePicker} />
+				</LocalizationProvider>
 				<IconButton
 					aria-label="delete"
 					className="delete-button"
