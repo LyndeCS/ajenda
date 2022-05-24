@@ -4,8 +4,8 @@ import { Checkbox, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import DateTimePicker from "@mui/x-date-pickers/DateTimePicker";
-import LocalizationProvider from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
@@ -124,16 +124,13 @@ function Task(props) {
 				{props.desc}
 			</div>
 			<div className="task-button-container">
-				<LocalizationProvider dateAdapter={AdapterDateFns}>
-					<IconButton
-						aria-label="schedule"
-						className="schedule-button"
-						onClick={() => handleSchedule(props.id)}
-					>
-						<ScheduleIcon className="schedule-icon" />
-					</IconButton>
-					<DateTimePicker open={openDateTimePicker} />
-				</LocalizationProvider>
+				<IconButton
+					aria-label="schedule"
+					className="schedule-button"
+					onClick={() => handleSchedule(props.id)}
+				>
+					<ScheduleIcon className="schedule-icon" />
+				</IconButton>
 				<IconButton
 					aria-label="delete"
 					className="delete-button"
