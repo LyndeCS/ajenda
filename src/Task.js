@@ -55,7 +55,13 @@ function Task(props) {
 	}
 
 	function handleDateChange(e) {
-		console.log("handleDateChange fired: " + e);
+		setSelectedDate(e);
+		console.log("date changed: " + selectedDate);
+	}
+
+	function handleDateTimePickerClose(e) {
+		setIsDateTimePickerOpen(false);
+		console.log("picker closed: " + selectedDate);
 	}
 
 	const editingTemplate = (
@@ -133,7 +139,7 @@ function Task(props) {
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<DateTimePicker
 						open={isDateTimePickerOpen}
-						onClose={() => setIsDateTimePickerOpen(false)}
+						onClose={handleDateTimePickerClose}
 						value={selectedDate}
 						onChange={handleDateChange}
 						renderInput={({
@@ -152,12 +158,13 @@ function Task(props) {
 									disabled={disabled}
 									{...inputProps}
 								/>
-								<Button
-									variant="outlined"
-									color="primary"
+								<IconButton
+									aria-label="schedule"
+									className="schedule-button"
 									onClick={() => setIsDateTimePickerOpen((isOpen) => !isOpen)}
-									startIcon={<CalendarTodayIcon />}
-								></Button>
+								>
+									<ScheduleIcon className="schedule-icon" />
+								</IconButton>
 							</div>
 						)}
 					/>
