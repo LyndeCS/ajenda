@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./css/Task.css";
-import { Checkbox, TextField, IconButton } from "@mui/material";
+import { Checkbox, TextField, IconButton, Button } from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import DateFnsUtils from "@date-io/date-fns"; //fixme: redundant import below
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -13,14 +15,14 @@ function Task(props) {
 	const [isEditing, setEditing] = useState(props.desc ? false : true);
 
 	// fixme: DatePicker separated from Task.js
-	const [openDateTimePicker, setOpenDateTimePicker] = useState(false);
+	const [isDateTimePickerOpen, setIsDateTimePickerOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [datePickerDialog, setDatePickerDialog] = useState();
 
 	function handleSchedule(e) {
 		// open datepicker
 		// send datepicker info to props.scheduleTask
-		setOpenDateTimePicker((isOpen) => !isOpen);
+		// setOpenDateTimePicker((isOpen) => !isOpen);
 	}
 
 	function handleChange(e) {
@@ -50,6 +52,10 @@ function Task(props) {
 		} else {
 			props.deleteTask(props.id);
 		}
+	}
+
+	function handleDateChange(e) {
+		console.log("handleDateChange fired: " + e);
 	}
 
 	const editingTemplate = (
@@ -124,13 +130,38 @@ function Task(props) {
 				{props.desc}
 			</div>
 			<div className="task-button-container">
-				<IconButton
-					aria-label="schedule"
-					className="schedule-button"
-					onClick={() => handleSchedule(props.id)}
-				>
-					<ScheduleIcon className="schedule-icon" />
-				</IconButton>
+				<LocalizationProvider dateAdapter={AdapterDateFns}>
+					<DateTimePicker
+						open={isDateTimePickerOpen}
+						onClose={() => setIsDateTimePickerOpen(false)}
+						value={selectedDate}
+						onChange={handleDateChange}
+						renderInput={({
+							ref,
+							inputProps,
+							disabled,
+							onChange,
+							value,
+							...other
+						}) => (
+							<div ref={ref} {...other}>
+								<input
+									style={{ display: "none" }}
+									value={value}
+									onChange={onChange}
+									disabled={disabled}
+									{...inputProps}
+								/>
+								<Button
+									variant="outlined"
+									color="primary"
+									onClick={() => setIsDateTimePickerOpen((isOpen) => !isOpen)}
+									startIcon={<CalendarTodayIcon />}
+								></Button>
+							</div>
+						)}
+					/>
+				</LocalizationProvider>
 				<IconButton
 					aria-label="delete"
 					className="delete-button"
