@@ -17,13 +17,6 @@ function Task(props) {
 	// fixme: DatePicker separated from Task.js
 	const [isDateTimePickerOpen, setIsDateTimePickerOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(new Date());
-	const [datePickerDialog, setDatePickerDialog] = useState();
-
-	function handleSchedule(e) {
-		// open datepicker
-		// send datepicker info to props.scheduleTask
-		// setOpenDateTimePicker((isOpen) => !isOpen);
-	}
 
 	function handleChange(e) {
 		setNewDesc(e.target.value);
@@ -54,14 +47,8 @@ function Task(props) {
 		}
 	}
 
-	function handleDateChange(e) {
-		setSelectedDate(e);
-		console.log("date changed: " + selectedDate);
-	}
-
 	function handleDateTimePickerClose(e) {
 		setIsDateTimePickerOpen(false);
-		console.log("picker closed: " + selectedDate);
 	}
 
 	const editingTemplate = (
@@ -96,13 +83,13 @@ function Task(props) {
 				/>
 			</form>
 			<div className="task-button-container">
-				<IconButton
+				{/* <IconButton
 					aria-label="schedule"
 					className="schedule-button"
 					onClick={() => handleSchedule(props.id)}
 				>
 					<ScheduleIcon className="schedule-icon" />
-				</IconButton>
+				</IconButton> */}
 				<IconButton
 					aria-label="delete"
 					className="delete-button"
@@ -141,7 +128,7 @@ function Task(props) {
 						open={isDateTimePickerOpen}
 						onClose={handleDateTimePickerClose}
 						value={selectedDate}
-						onChange={handleDateChange}
+						onChange={setSelectedDate}
 						renderInput={({
 							ref,
 							inputProps,
