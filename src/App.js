@@ -23,10 +23,15 @@ function App() {
 		setTasks([...tasks, newTask]);
 	}
 
-	function saveTask(id, desc) {
+	function saveTask(id, desc, scheduledStart, scheduledEnd) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
-				return { ...task, desc: desc };
+				return {
+					...task,
+					desc: desc,
+					startDate: scheduledStart,
+					endDate: scheduledEnd,
+				};
 			}
 			return task;
 		});

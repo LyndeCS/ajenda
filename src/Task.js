@@ -41,7 +41,7 @@ function Task(props) {
 	const handleModalClose = () => setModalOpen(false);
 
 	// fixme: DatePicker separated from Task.js
-	let currDate = Date.now();
+	const currDate = Date.now();
 	const [startDate, setStartDate] = useState(new Date(currDate));
 	const [endDate, setEndDate] = useState(new Date(currDate));
 	const [startTime, setStartTime] = useState(new Date(currDate));
@@ -80,12 +80,37 @@ function Task(props) {
 
 	function handleScheduleSubmit(e) {
 		//handleModalClose();
-		const testDate = new Date(startDate);
-		console.log(testDate);
-		// console.log("Start Date: " + startDate);
-		// console.log("End Date: " + endDate);
-		// console.log("Start Time: " + startTime);
-		// console.log("End Date: " + endTime);
+		//props.saveTask(props.id, newDesc,);
+		const startYear = startDate.getFullYear();
+		const startMonth = startDate.getMonth();
+		const startDay = startDate.getDate();
+		const startHours = startTime.getHours();
+		const startMinutes = startTime.getMinutes();
+
+		// combine date and time to one number
+		const scheduledStartDate = new Date(
+			startYear,
+			startMonth,
+			startDay,
+			startHours,
+			startMinutes
+		);
+
+		const endYear = endDate.getFullYear();
+		const endMonth = endDate.getMonth();
+		const endDay = endDate.getDate();
+		const endHours = endTime.getHours();
+		const endMinutes = endTime.getMinutes();
+
+		const scheduledEndDate = new Date(
+			endYear,
+			endMonth,
+			endDay,
+			endHours,
+			endMinutes
+		);
+
+		props.saveTask(props.id, newDesc, scheduledStartDate, scheduledEndDate);
 	}
 
 	const editingTemplate = (
@@ -172,7 +197,7 @@ function Task(props) {
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
 							<div className="start-date-picker">
 								<DatePicker
-									label="Select Start Date"
+									label="Start Date"
 									value={startDate}
 									onChange={(newValue) => {
 										setStartDate(newValue);
@@ -182,7 +207,7 @@ function Task(props) {
 							</div>
 							<div className="end-date-picker">
 								<DatePicker
-									label="Select End Date"
+									label="End Date"
 									value={endDate}
 									onChange={(newValue) => {
 										setEndDate(newValue);
