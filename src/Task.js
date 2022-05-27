@@ -6,16 +6,16 @@ import {
 	IconButton,
 	Button,
 	Modal,
-	Typography,
 	Box,
+	ThemeProvider,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import theme from "./theme";
 
 //fixme: refactor
 const style = {
@@ -42,10 +42,12 @@ function Task(props) {
 
 	// fixme: DatePicker separated from Task.js
 	let currDate = Date.now();
-	const [isDateTimePickerOpen, setIsDateTimePickerOpen] = useState(false);
-	const [selectedDate, setSelectedDate] = useState(currDate);
-	const [startTime, setStartTime] = useState(currDate);
-	const [endTime, setEndTime] = useState(currDate + 1 * 60 * 60 * 1000);
+	const [startDate, setStartDate] = useState(new Date(currDate));
+	const [endDate, setEndDate] = useState(new Date(currDate));
+	const [startTime, setStartTime] = useState(new Date(currDate));
+	const [endTime, setEndTime] = useState(
+		new Date(currDate + 1 * 60 * 60 * 1000)
+	);
 
 	function handleChange(e) {
 		setNewDesc(e.target.value);
@@ -76,8 +78,14 @@ function Task(props) {
 		}
 	}
 
-	function handleDateTimePickerClose(e) {
-		setIsDateTimePickerOpen(false);
+	function handleScheduleSubmit(e) {
+		//handleModalClose();
+		const testDate = new Date(startDate);
+		console.log(testDate);
+		// console.log("Start Date: " + startDate);
+		// console.log("End Date: " + endDate);
+		// console.log("Start Time: " + startTime);
+		// console.log("End Date: " + endTime);
 	}
 
 	const editingTemplate = (
@@ -162,31 +170,56 @@ function Task(props) {
 				<Modal open={isModalOpen} onClose={handleModalClose}>
 					<Box sx={style}>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<DatePicker
-								label="Select Date"
-								value={selectedDate}
-								onChange={(newValue) => {
-									setSelectedDate(newValue);
-								}}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-							<TimePicker
-								label="Start Time"
-								value={startTime}
-								onChange={(newValue) => {
-									setStartTime(newValue);
-								}}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-							<TimePicker
-								label="End Time"
-								value={endTime}
-								onChange={(newValue) => {
-									setEndTime(newValue);
-								}}
-								renderInput={(params) => <TextField {...params} />}
-							/>
+							<div className="start-date-picker">
+								<DatePicker
+									label="Select Start Date"
+									value={startDate}
+									onChange={(newValue) => {
+										setStartDate(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</div>
+							<div className="end-date-picker">
+								<DatePicker
+									label="Select End Date"
+									value={endDate}
+									onChange={(newValue) => {
+										setEndDate(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</div>
+							<div className="start-time-picker">
+								<TimePicker
+									label="Start Time"
+									value={startTime}
+									onChange={(newValue) => {
+										setStartTime(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</div>
+							<div className="end-time-picker">
+								<TimePicker
+									label="End Time"
+									value={endTime}
+									onChange={(newValue) => {
+										setEndTime(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</div>
 						</LocalizationProvider>
+						<ThemeProvider theme={theme}>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={handleScheduleSubmit}
+							>
+								Schedule Task
+							</Button>
+						</ThemeProvider>
 					</Box>
 				</Modal>
 				<IconButton

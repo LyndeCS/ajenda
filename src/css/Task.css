@@ -70,3 +70,7 @@ form {
 .task:hover {
 	background-color: rgba(0, 0, 0, 0.04);
 }
+
+.start-date-picker, .end-date-picker, .start-time-picker, .end-time-picker {
+	margin-bottom: 1em;
+}
