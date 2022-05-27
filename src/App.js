@@ -6,8 +6,6 @@ import "./css/App.css";
 
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
-const currentDate = new Date();
-
 function App() {
 	const [tasks, setTasks] = useState([]);
 
@@ -21,6 +19,7 @@ function App() {
 			endDate: "",
 		};
 		setTasks([...tasks, newTask]);
+		console.log(tasks);
 	}
 
 	function saveTask(id, desc, scheduledStart, scheduledEnd) {
@@ -104,7 +103,8 @@ function App() {
 				countTasks={countTasks}
 				scheduleTask={scheduleTask}
 			/>
-			<ScheduleView tasks={tasks} />
+			{/* fixme: task.category === "scheduled" */}
+			<ScheduleView tasks={tasks.filter((task) => task.startDate)} />
 		</div>
 	);
 }
