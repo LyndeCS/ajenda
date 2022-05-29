@@ -110,7 +110,7 @@ function Task(props) {
 			endMinutes
 		);
 
-		props.saveTask(props.id, newDesc, scheduledStartDate, scheduledEndDate);
+		props.scheduleTask(props.id, scheduledStartDate, scheduledEndDate);
 	}
 
 	const editingTemplate = (

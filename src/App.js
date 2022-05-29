@@ -22,14 +22,27 @@ function App() {
 		console.log(tasks);
 	}
 
-	function saveTask(id, desc, scheduledStart, scheduledEnd) {
+	function saveTask(id, desc) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
 				return {
 					...task,
 					desc: desc,
+				};
+			}
+			return task;
+		});
+		setTasks(updatedTasks);
+	}
+
+	function scheduleTask(id, scheduledStart, scheduledEnd) {
+		const updatedTasks = tasks.map((task) => {
+			if (id === task.id) {
+				return {
+					...task,
 					startDate: scheduledStart,
 					endDate: scheduledEnd,
+					category: "scheduled",
 				};
 			}
 			return task;
@@ -70,10 +83,6 @@ function App() {
 	function countTasks(category) {
 		const count = tasks.filter((task) => task.category === category).length;
 		return count;
-	}
-
-	function scheduleTask(input) {
-		console.log(input);
 	}
 
 	function sortTasks() {
