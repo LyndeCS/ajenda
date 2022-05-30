@@ -27,7 +27,7 @@ form {
 	width: 88%;
 }
 
-.delete-button {
+ .delete-button {
 	display: none !important;
 }
 
@@ -36,28 +36,16 @@ form {
 }
 
 .task:hover .delete-button, .task:hover .schedule-button {
-	display: flex !important;
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-	margin-left: auto !important;
-	margin-right: 0.5em !important;
+	display: inline-flex !important;
+} 
+
+.task-buttons {
+	display: none !important;
 }
 
-/* .task-buttons {
-	display: none !important;
-} */
-
-/* .task-button-container {
-		display: flex !important;
-		margin-top: 0 !important;
-		margin-bottom: 0 !important;
-		margin-left: auto !important;
-		margin-right: 0.5em !important;
-		float: right !important;
-		padding: 0 !important;
-		width: 50% !important;
-		height: 100% !important;
-} */
+.task-button-container {
+	display: inline-flex !important;
+}
 
 /* .delete-button {
 	display: block !important;

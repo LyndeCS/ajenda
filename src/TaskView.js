@@ -91,7 +91,12 @@ function TaskView(props) {
 				{headerTaskGroups}
 
 				<ThemeProvider theme={theme}>
-					<Button variant="contained" color="primary" onClick={createTask}>
+					<Button
+						className="add-task-button"
+						variant="contained"
+						color="primary"
+						onClick={createTask}
+					>
 						Add Task
 					</Button>
 				</ThemeProvider>

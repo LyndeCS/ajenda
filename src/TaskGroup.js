@@ -20,6 +20,8 @@ function TaskGroup(props) {
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
 				scheduleTask={props.scheduleTask}
+				startDate={task.startDate}
+				endDate={task.endDate}
 			/>
 		));
 

@@ -37,16 +37,23 @@ function Task(props) {
 
 	// modal
 	const [isModalOpen, setModalOpen] = useState(false);
-	const handleModalOpen = () => setModalOpen(true);
 	const handleModalClose = () => setModalOpen(false);
 
 	// fixme: DatePicker separated from Task.js
 	const currDate = Date.now();
-	const [startDate, setStartDate] = useState(new Date(currDate));
-	const [endDate, setEndDate] = useState(new Date(currDate));
-	const [startTime, setStartTime] = useState(new Date(currDate));
+	const timeInOneHour = new Date(currDate + 1 * 60 * 60 * 1000);
+
+	const [startDate, setStartDate] = useState(
+		props.startDate ? props.startDate : new Date(currDate)
+	);
+	const [endDate, setEndDate] = useState(
+		props.endDate ? props.endDate : new Date(currDate)
+	);
+	const [startTime, setStartTime] = useState(
+		props.startDate ? props.startDate : new Date(currDate)
+	);
 	const [endTime, setEndTime] = useState(
-		new Date(currDate + 1 * 60 * 60 * 1000)
+		props.endDate ? props.endDate : timeInOneHour
 	);
 
 	function handleChange(e) {
@@ -76,6 +83,10 @@ function Task(props) {
 		} else {
 			props.deleteTask(props.id);
 		}
+	}
+
+	function handleModalOpen(e) {
+		setModalOpen(true);
 	}
 
 	function handleScheduleSubmit(e) {
