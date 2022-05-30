@@ -7,6 +7,9 @@ import "./css/App.css";
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
+	const currDate = Date.now();
+	const currentDate = new Date(currDate);
+
 	const [tasks, setTasks] = useState([]);
 
 	function addTask(desc) {
@@ -19,7 +22,6 @@ function App() {
 			endDate: "",
 		};
 		setTasks([...tasks, newTask]);
-		console.log(tasks);
 	}
 
 	function saveTask(id, desc) {
@@ -50,14 +52,29 @@ function App() {
 		setTasks(updatedTasks);
 	}
 
+	//fixme: verbose, will need to check for past schedule
 	function completeTask(id) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
-				return {
-					...task,
-					completed: !task.completed,
-					category: !task.completed ? "completed" : task.category,
-				};
+				if (!task.completed) {
+					return {
+						...task,
+						completed: !task.completed,
+						category: !task.completed ? "completed" : task.category,
+					};
+				} else if (task.startDate === "") {
+					return {
+						...task,
+						completed: !task.completed,
+						category: !task.completed ? "completed" : "unscheduled",
+					};
+				} else if (task.startDate !== "") {
+					return {
+						...task,
+						completed: !task.completed,
+						category: !task.completed ? "completed" : "scheduled",
+					};
+				}
 			}
 			return task;
 		});
@@ -85,13 +102,19 @@ function App() {
 		return count;
 	}
 
-	function sortTasks() {
-		const incompleteTasks = tasks.filter((task) => !task.completed);
-		const completedTasks = tasks.filter((task) => task.completed);
-		const sortedTasks = [...incompleteTasks, ...completedTasks];
-		setTasks(sortedTasks);
+	function findPastDueTasks() {
+		const scheduledTasks = tasks.filter(
+			(task) => task.startDate && !task.completed
+		);
+		if (scheduledTasks) {
+			console.log(scheduledTasks);
+		}
 	}
 
+	// const interval = setInterval(findPastDueTasks, 5 * 1000);
+	// clearInterval(interval);
+
+	// load saved tasks from local storage, or create new array if one does not exist
 	useEffect(() => {
 		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 		if (storedTasks) setTasks(storedTasks);
@@ -99,6 +122,32 @@ function App() {
 	useEffect(() => {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
 	}, [tasks]);
+
+	// check for past due tasks
+	//fixme: verbose
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const scheduledTasks = tasks.filter(
+				(task) =>
+					!task.completed &&
+					task.category !== "past" &&
+					Date.parse(task.endDate) < Date.now()
+			);
+			if (scheduledTasks.length > 0) {
+				const updatedTasks = tasks.map((task) => {
+					if (Date.parse(task.endDate) < Date.now()) {
+						return {
+							...task,
+							category: "past",
+						};
+					}
+					return task;
+				});
+				setTasks(updatedTasks);
+			}
+		}, 60 * 1000);
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
 		<div className="App">
@@ -108,7 +157,6 @@ function App() {
 				deleteTask={deleteTask}
 				saveTask={saveTask}
 				completeTask={completeTask}
-				sortTasks={sortTasks}
 				countTasks={countTasks}
 				scheduleTask={scheduleTask}
 			/>
