@@ -7,9 +7,6 @@ import "./css/App.css";
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
-	const currDate = Date.now();
-	const currentDate = new Date(currDate);
-
 	const [tasks, setTasks] = useState([]);
 
 	function addTask(desc) {
@@ -102,18 +99,6 @@ function App() {
 		return count;
 	}
 
-	function findPastDueTasks() {
-		const scheduledTasks = tasks.filter(
-			(task) => task.startDate && !task.completed
-		);
-		if (scheduledTasks) {
-			console.log(scheduledTasks);
-		}
-	}
-
-	// const interval = setInterval(findPastDueTasks, 5 * 1000);
-	// clearInterval(interval);
-
 	// load saved tasks from local storage, or create new array if one does not exist
 	useEffect(() => {
 		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
@@ -123,7 +108,7 @@ function App() {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
 	}, [tasks]);
 
-	// check for past due tasks
+	// check for past due tasks and update category to "past" if found
 	//fixme: verbose
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -147,7 +132,7 @@ function App() {
 			}
 		}, 60 * 1000);
 		return () => clearInterval(interval);
-	}, []);
+	}, [tasks]);
 
 	return (
 		<div className="App">
