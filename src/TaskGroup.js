@@ -22,6 +22,7 @@ function TaskGroup(props) {
 				scheduleTask={props.scheduleTask}
 				startDate={task.startDate}
 				endDate={task.endDate}
+				category={task.category}
 			/>
 		));
 

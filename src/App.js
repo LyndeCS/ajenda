@@ -120,7 +120,7 @@ function App() {
 			);
 			if (scheduledTasks.length > 0) {
 				const updatedTasks = tasks.map((task) => {
-					if (Date.parse(task.endDate) < Date.now()) {
+					if (Date.parse(task.endDate) < Date.now() && !task.complete) {
 						return {
 							...task,
 							category: "past",

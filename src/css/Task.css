@@ -11,6 +11,7 @@
 .task-desc {
 	margin: auto;
 	margin-left: 0;
+	margin-right: 3em;
 	font-size: 1.2em;
 }
 
@@ -37,23 +38,7 @@ form {
 
 .task:hover .delete-button, .task:hover .schedule-button {
 	display: inline-flex !important;
-} 
-
-.task-buttons {
-	display: none !important;
 }
-
-.task-button-container {
-	display: inline-flex !important;
-}
-
-/* .delete-button {
-	display: block !important;
-}
-
-.schedule-button {
-	display: block !important;
-} */
 
 .task:hover {
 	background-color: rgba(0, 0, 0, 0.04);

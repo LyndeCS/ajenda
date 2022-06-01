@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import theme from "./theme";
+import Timeframe from "./Timeframe";
 
 //fixme: refactor
 const style = {
@@ -34,6 +35,9 @@ function Task(props) {
 	// add task button or double click should be only way to edit, one task at a time
 	const [newDesc, setNewDesc] = useState(props.desc);
 	const [isEditing, setEditing] = useState(props.desc ? false : true);
+	const [isScheduled, setScheduled] = useState(
+		props.category === "scheduled" ? true : false
+	);
 
 	// modal
 	const [isModalOpen, setModalOpen] = useState(false);
@@ -122,6 +126,7 @@ function Task(props) {
 		);
 
 		props.scheduleTask(props.id, scheduledStartDate, scheduledEndDate);
+		setScheduled(true);
 	}
 
 	const editingTemplate = (
@@ -195,6 +200,9 @@ function Task(props) {
 			>
 				{props.desc}
 			</div>
+			{isScheduled && (
+				<Timeframe startDate={props.startDate} endDate={props.endDate} />
+			)}
 			<div className="task-button-container">
 				<IconButton
 					aria-label="schedule"
