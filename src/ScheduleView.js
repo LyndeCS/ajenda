@@ -3,8 +3,10 @@ import { ViewState } from "@devexpress/dx-react-scheduler";
 import {
 	Scheduler,
 	DayView,
+	WeekView,
 	MonthView,
 	Toolbar,
+	ViewSwitcher,
 	DateNavigator,
 	Appointments,
 	TodayButton,
@@ -15,7 +17,7 @@ import classNames from "clsx";
 import { styled, alpha } from "@mui/material/styles";
 
 const currentDate = new Date();
-const currentHour = currentDate.getHours();
+const currentHour = Math.min(currentDate.getHours(), 16);
 
 //fixme: devexpress example
 const PREFIX = "Demo";
@@ -73,9 +75,12 @@ function ScheduleView(props) {
 			<Scheduler data={schedulerData}>
 				<ViewState currentDate={currentDate} />
 				<DayView startDayHour={currentHour} endDayHour={24} />
+				<WeekView startDayHour={currentHour} endDayHour={24} />
+				<MonthView startDayHour={currentHour} endDayHour={24} />
 				<Toolbar />
 				<DateNavigator />
 				<TodayButton />
+				<ViewSwitcher />
 				<Appointments />
 				<CurrentTimeIndicator indicatorComponent={TimeIndicator} />
 			</Scheduler>
