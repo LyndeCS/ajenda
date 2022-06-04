@@ -17,7 +17,7 @@ import classNames from "clsx";
 import { styled, alpha } from "@mui/material/styles";
 
 const currentDate = new Date();
-const currentHour = Math.min(currentDate.getHours(), 16);
+const currentHour = Math.min(currentDate.getHours(), 15.5);
 
 //fixme: devexpress example
 const PREFIX = "Demo";
@@ -73,10 +73,10 @@ function ScheduleView(props) {
 	return (
 		<div className="schedule-container">
 			<Scheduler data={schedulerData}>
-				<ViewState currentDate={currentDate} />
+				<ViewState />
 				<DayView startDayHour={currentHour} endDayHour={24} />
 				<WeekView startDayHour={currentHour} endDayHour={24} />
-				<MonthView startDayHour={currentHour} endDayHour={24} />
+				<MonthView />
 				<Toolbar />
 				<DateNavigator />
 				<TodayButton />
