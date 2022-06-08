@@ -48,16 +48,16 @@ function Task(props) {
 	const timeInOneHour = new Date(currDate + 1 * 60 * 60 * 1000);
 
 	const [startDate, setStartDate] = useState(
-		props.startDate ? props.startDate : new Date(currDate)
+		props.startDate ? new Date(props.startDate) : new Date(currDate)
 	);
 	const [endDate, setEndDate] = useState(
-		props.endDate ? props.endDate : new Date(currDate)
+		props.endDate ? new Date(props.endDate) : new Date(currDate)
 	);
 	const [startTime, setStartTime] = useState(
-		props.startDate ? props.startDate : new Date(currDate)
+		props.startDate ? new Date(props.startDate) : new Date(currDate)
 	);
 	const [endTime, setEndTime] = useState(
-		props.endDate ? props.endDate : timeInOneHour
+		props.endDate ? new Date(props.endDate) : timeInOneHour
 	);
 
 	function handleChange(e) {

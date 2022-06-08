@@ -110,27 +110,58 @@ function App() {
 
 	// check for past due tasks and update category to "past" if found
 	//fixme: verbose
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		const scheduledTasks = tasks.filter(
+	// 			(task) =>
+	// 				task.category === "scheduled" && Date.parse(task.endDate) < Date.now()
+	// 		);
+	// 		if (scheduledTasks.length > 0) {
+	// 			const updatedTasks = tasks.map((task) => {
+	// 				if (Date.parse(task.endDate) < Date.now() && !task.complete) {
+	// 					return {
+	// 						...task,
+	// 						category: "past",
+	// 					};
+	// 				}
+	// 				return task;
+	// 			});
+	// 			setTasks(updatedTasks);
+	// 		}
+	// 	}, 10 * 1000);
+	// 	return () => clearInterval(interval);
+	// }, [tasks]);
+
+	// Check task completion and endDate to determine if past due
+	function pastDue(task) {
+		// if task is completed, it is not past due
+		if (task.completed) {
+			return false;
+		}
+
+		const endDate = new Date(task.endDate);
+		const currentDate = new Date(Date.now());
+		if (endDate < currentDate) {
+			return true;
+		}
+		return false;
+	}
+
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const scheduledTasks = tasks.filter(
-				(task) =>
-					!task.completed &&
-					task.category !== "past" &&
-					Date.parse(task.endDate) < Date.now()
-			);
-			if (scheduledTasks.length > 0) {
-				const updatedTasks = tasks.map((task) => {
-					if (Date.parse(task.endDate) < Date.now() && !task.complete) {
-						return {
-							...task,
-							category: "past",
-						};
-					}
-					return task;
-				});
-				setTasks(updatedTasks);
-			}
-		}, 60 * 1000);
+			// checks all tasks
+			// some tasks may not have start/end date
+			const updatedTasks = tasks.map((task) => {
+				if (task.category === "scheduled" && pastDue(task)) {
+					return {
+						...task,
+						category: "past",
+					};
+				}
+				return task;
+			});
+			setTasks(updatedTasks);
+		}, 10 * 1000);
 		return () => clearInterval(interval);
 	}, [tasks]);
 

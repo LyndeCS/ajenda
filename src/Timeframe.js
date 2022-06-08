@@ -11,19 +11,21 @@ function Timeframe(props) {
 
 	function formatDate(start, end) {
 		const today = new Date();
+		const startDate = new Date(start);
 		const options = { month: "short" };
 		let date = "";
+
 		if (
-			start.getDate() === today.getDate() &&
-			start.getMonth() === today.getMonth() &&
-			start.getFullYear() === today.getFullYear()
+			startDate.getDate() === today.getDate() &&
+			startDate.getMonth() === today.getMonth() &&
+			startDate.getFullYear() === today.getFullYear()
 		) {
 			date = "Today";
 		} else {
 			date =
-				new Intl.DateTimeFormat("en-US", options).format(start.getMonth()) +
+				new Intl.DateTimeFormat("en-US", options).format(startDate.getMonth()) +
 				" " +
-				start.getDate();
+				startDate.getDate();
 		}
 
 		return date;
