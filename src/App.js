@@ -99,39 +99,6 @@ function App() {
 		return count;
 	}
 
-	// load saved tasks from local storage, or create new array if one does not exist
-	useEffect(() => {
-		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-		if (storedTasks) setTasks(storedTasks);
-	}, []);
-	useEffect(() => {
-		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
-	}, [tasks]);
-
-	// check for past due tasks and update category to "past" if found
-	//fixme: verbose
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		const scheduledTasks = tasks.filter(
-	// 			(task) =>
-	// 				task.category === "scheduled" && Date.parse(task.endDate) < Date.now()
-	// 		);
-	// 		if (scheduledTasks.length > 0) {
-	// 			const updatedTasks = tasks.map((task) => {
-	// 				if (Date.parse(task.endDate) < Date.now() && !task.complete) {
-	// 					return {
-	// 						...task,
-	// 						category: "past",
-	// 					};
-	// 				}
-	// 				return task;
-	// 			});
-	// 			setTasks(updatedTasks);
-	// 		}
-	// 	}, 10 * 1000);
-	// 	return () => clearInterval(interval);
-	// }, [tasks]);
-
 	// Check task completion and endDate to determine if past due
 	function pastDue(task) {
 		// if task is completed, it is not past due
@@ -147,6 +114,16 @@ function App() {
 		return false;
 	}
 
+	// load saved tasks from local storage, or create new array if one does not exist
+	useEffect(() => {
+		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+		if (storedTasks) setTasks(storedTasks);
+	}, []);
+	useEffect(() => {
+		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+	}, [tasks]);
+
+	// check for past due tasks every minute
 	useEffect(() => {
 		const interval = setInterval(() => {
 			// checks all tasks
@@ -161,7 +138,7 @@ function App() {
 				return task;
 			});
 			setTasks(updatedTasks);
-		}, 10 * 1000);
+		}, 60 * 1000);
 		return () => clearInterval(interval);
 	}, [tasks]);
 

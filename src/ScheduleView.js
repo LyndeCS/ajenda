@@ -54,6 +54,20 @@ const StyledDiv = styled("div", {
 	},
 }));
 
+const Appointment = ({ children, style, ...restProps }) => (
+	<Appointments.Appointment
+		{...restProps}
+		style={{
+			...style,
+			backgroundColor: "#00BE91",
+			fontSize: 14,
+			fontFamily: "Quicksand",
+		}}
+	>
+		{children}
+	</Appointments.Appointment>
+);
+
 function ScheduleView(props) {
 	const schedulerData = props.tasks.map((task) => {
 		return {
@@ -81,7 +95,7 @@ function ScheduleView(props) {
 				<DateNavigator />
 				<TodayButton />
 				<ViewSwitcher />
-				<Appointments />
+				<Appointments appointmentComponent={Appointment} />
 				<CurrentTimeIndicator indicatorComponent={TimeIndicator} />
 			</Scheduler>
 		</div>
