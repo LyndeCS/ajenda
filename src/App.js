@@ -124,23 +124,23 @@ function App() {
 	}, [tasks]);
 
 	// check for past due tasks every minute
-	useEffect(() => {
-		const interval = setInterval(() => {
-			// checks all tasks
-			// some tasks may not have start/end date
-			const updatedTasks = tasks.map((task) => {
-				if (task.category === "scheduled" && pastDue(task)) {
-					return {
-						...task,
-						category: "past",
-					};
-				}
-				return task;
-			});
-			setTasks(updatedTasks);
-		}, 60 * 1000);
-		return () => clearInterval(interval);
-	}, [tasks]);
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		// checks all tasks
+	// 		// some tasks may not have start/end date
+	// 		const updatedTasks = tasks.map((task) => {
+	// 			if (task.category === "scheduled" && pastDue(task)) {
+	// 				return {
+	// 					...task,
+	// 					category: "past",
+	// 				};
+	// 			}
+	// 			return task;
+	// 		});
+	// 		setTasks(updatedTasks);
+	// 	}, 60 * 1000);
+	// 	return () => clearInterval(interval);
+	// }, [tasks]);
 
 	return (
 		<div className="App">

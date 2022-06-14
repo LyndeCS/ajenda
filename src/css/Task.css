@@ -22,6 +22,7 @@ li {
 	font-weight: 300;
 }
 
+/* fixme: task editing */
 form {
 	display: flex;
 	width: 88%;

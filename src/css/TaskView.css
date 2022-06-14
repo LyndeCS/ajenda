@@ -4,10 +4,8 @@
 	border-right: solid;
 	border-width: 1px;
 	border-color: rgba(0, 0, 0, 0.12);
-	flex-wrap: wrap;
-	margin: 0;
-	overflow: hidden;
-	position: relative;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 h1,
@@ -33,22 +31,20 @@ h2 {
 }
 
 .task-body {
-	width: 100%;
-	padding-right: 0.5em;
-	justify-content: flex-start;
+	display: flex; /* fixme: test1 */
+	flex-direction: column;
+	align-items: stretch;
 }
 
 .task-footer {
-	width: 100%;
-	padding-right: 0.5em;
 	padding-top: 1em;
-	position: absolute;
-	bottom: 0;
 }
 
+/* fixme: changing .task-body to display: flex altered button width */
 .add-task-button {
 	margin-left: 42px !important;
 	margin-top: 1em !important;
+	width: 30%;
 }
 
 ul {
@@ -56,10 +52,3 @@ ul {
 	margin: 0;
 }
 
-.collapsed {
-	display: none;
-}
-
-.expanded {
-	display: block;
-}

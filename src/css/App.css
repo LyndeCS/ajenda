@@ -1,9 +1,7 @@
 .App {
 	display: flex;
-	overflow: hidden;
 }
 
 body {
-	overflow: hidden;
 	margin: 0;
 }
