@@ -6,6 +6,8 @@
 	border-color: rgba(0, 0, 0, 0.12);
 	overflow-y: auto;
 	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
 h1,
@@ -31,9 +33,7 @@ h2 {
 }
 
 .task-body {
-	display: flex; /* fixme: test1 */
-	flex-direction: column;
-	align-items: stretch;
+	flex: 1;
 }
 
 .task-footer {
@@ -52,3 +52,8 @@ ul {
 	margin: 0;
 }
 
+.task-groups {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}

@@ -87,24 +87,26 @@ function TaskView(props) {
 			</div>
 			<Divider />
 
-			<div className="task-body">
-				{headerTaskGroups}
+			<div className="task-groups">
+				<div className="task-body">
+					{headerTaskGroups}
 
-				<ThemeProvider theme={theme}>
-					<Button
-						className="add-task-button"
-						variant="contained"
-						color="primary"
-						onClick={createTask}
-					>
-						Add Task
-					</Button>
-				</ThemeProvider>
-			</div>
+					<ThemeProvider theme={theme}>
+						<Button
+							className="add-task-button"
+							variant="contained"
+							color="primary"
+							onClick={createTask}
+						>
+							Add Task
+						</Button>
+					</ThemeProvider>
+				</div>
 
-			<div className="task-footer">
-				<Divider />
-				{footerTaskGroups}
+				<div className="task-footer">
+					<Divider />
+					{footerTaskGroups}
+				</div>
 			</div>
 		</div>
 	);
