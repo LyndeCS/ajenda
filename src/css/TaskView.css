@@ -23,6 +23,8 @@ h1 {
 h2 {
 	padding-left: 0.25em;
 	margin: 0;
+	font-size: 20px;
+	font-weight: bold;
 }
 
 .task-header {
@@ -40,11 +42,9 @@ h2 {
 	padding-top: 1em;
 }
 
-/* fixme: changing .task-body to display: flex altered button width */
 .add-task-button {
-	margin-left: 42px !important;
-	margin-top: 1em !important;
-	width: 30%;
+	margin-left: 3.5em !important;
+	display: block;
 }
 
 ul {

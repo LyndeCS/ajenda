@@ -43,7 +43,29 @@ function Task(props) {
 	const [isModalOpen, setModalOpen] = useState(false);
 	const handleModalClose = () => setModalOpen(false);
 
-	// fixme: DatePicker separated from Task.js
+	// fixme: DatePicker separated from Task.js?
+	function getNextTimeSlotStart() {
+		const currentDate = new Date();
+		const currentMinutes = Math.max(currentDate.getMinutes());
+		if (currentMinutes < 30) {
+			return currentDate.setMinutes(30);
+		} else {
+			return currentDate.setHours(currentDate.getHours() + 1);
+		}
+	}
+	function getNextTimeSlotEnd() {
+		const currentDate = new Date();
+		const currentMinutes = Math.max(currentDate.getMinutes());
+		if (currentMinutes < 30) {
+			currentDate.setHours(currentDate.getHours() + 1);
+			return currentDate.setMinutes(30);
+		} else {
+			return currentDate.setHours(currentDate.getHours() + 2);
+		}
+	}
+	const [nextTimeSlotStart, setNextTimeSlotStart] =
+		useState(getNextTimeSlotStart);
+	const [nextTimeSlotEnd, setNextTimeSlotEnd] = useState(getNextTimeSlotEnd);
 	const currDate = Date.now();
 	const timeInOneHour = new Date(currDate + 1 * 60 * 60 * 1000);
 
@@ -90,6 +112,8 @@ function Task(props) {
 	}
 
 	function handleModalOpen(e) {
+		setNextTimeSlotStart(getNextTimeSlotStart);
+		setNextTimeSlotEnd(getNextTimeSlotEnd);
 		setModalOpen(true);
 	}
 
@@ -237,7 +261,7 @@ function Task(props) {
 							<div className="start-time-picker">
 								<TimePicker
 									label="Start Time"
-									value={startTime}
+									value={nextTimeSlotStart}
 									onChange={(newValue) => {
 										setStartTime(newValue);
 									}}
@@ -247,7 +271,7 @@ function Task(props) {
 							<div className="end-time-picker">
 								<TimePicker
 									label="End Time"
-									value={endTime}
+									value={nextTimeSlotEnd}
 									onChange={(newValue) => {
 										setEndTime(newValue);
 									}}

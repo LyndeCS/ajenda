@@ -68,6 +68,21 @@ const Appointment = ({ children, style, ...restProps }) => (
 	</Appointments.Appointment>
 );
 
+// const CustomTodayButton = ({ children, style, ...restProps }) => (
+// 	<TodayButton.Button
+// 		{...restProps}
+// 		style={{
+// 			...style,
+// 			color: "white",
+// 			backgroundColor: "#00BE91",
+// 			fontSize: 14,
+// 			fontFamily: "Quicksand",
+// 		}}
+// 	>
+// 		{children}
+// 	</TodayButton.Button>
+// );
+
 function ScheduleView(props) {
 	const schedulerData = props.tasks.map((task) => {
 		return {
@@ -93,6 +108,7 @@ function ScheduleView(props) {
 				<MonthView />
 				<Toolbar />
 				<DateNavigator />
+				{/* <TodayButton buttonComponent={CustomTodayButton} /> */}
 				<TodayButton />
 				<ViewSwitcher />
 				<Appointments appointmentComponent={Appointment} />

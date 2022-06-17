@@ -11,15 +11,12 @@
 .task-desc {
 	margin: auto;
 	margin-left: 0;
-	font-size: 1.2em;
+	font-size: 16px;
+	font-weight: light;
 }
 
 .completed-true {
 	text-decoration: line-through;
-}
-
-li {
-	font-weight: 300;
 }
 
 /* fixme: task editing */
@@ -28,27 +25,40 @@ form {
 	width: 88%;
 }
 
- .delete-button {
-	display: none !important;
-}
-
-.schedule-button {
-	display: none !important;
-}
-
-.task:hover .delete-button, .task:hover .schedule-button {
-	display: inline-flex !important;
-}
-
-.task-button-container{
-	margin-top: auto;
-	margin-bottom: auto;
-	margin-right: 0;
-}
-
 .task:hover {
 	background-color: rgba(0, 0, 0, 0.04);
 }
+
+
+
+/*--------------*/
+/* TASK BUTTONS */
+/*--------------*/
+
+ .delete-button {
+	visibility: hidden;
+}
+
+.schedule-button {
+	visibility: hidden;
+}
+
+.task:hover .delete-button, .task:hover .schedule-button {
+	visibility: visible;
+}
+
+.task-button-container{
+	display: flex;
+}
+
+
+
+
+
+
+/*------------------------*/
+/*    SCHEDULING MODAL    */
+/*------------------------*/
 
 .start-date-picker, .end-date-picker, .start-time-picker, .end-time-picker {
 	margin-bottom: 1em;
