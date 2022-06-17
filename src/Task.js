@@ -46,23 +46,26 @@ function Task(props) {
 	// fixme: DatePicker separated from Task.js?
 	function getNextTimeSlotStart() {
 		const currentDate = new Date();
-		const currentMinutes = Math.max(currentDate.getMinutes());
+		const currentMinutes = currentDate.getMinutes();
 		if (currentMinutes < 30) {
 			return currentDate.setMinutes(30);
 		} else {
-			return currentDate.setHours(currentDate.getHours() + 1);
+			currentDate.setHours(currentDate.getHours() + 1);
+			return currentDate.setMinutes(0);
 		}
 	}
 	function getNextTimeSlotEnd() {
 		const currentDate = new Date();
-		const currentMinutes = Math.max(currentDate.getMinutes());
+		const currentMinutes = currentDate.getMinutes();
 		if (currentMinutes < 30) {
 			currentDate.setHours(currentDate.getHours() + 1);
-			return currentDate.setMinutes(30);
+			return currentDate.setMinutes(0);
 		} else {
-			return currentDate.setHours(currentDate.getHours() + 2);
+			currentDate.setHours(currentDate.getHours() + 1);
+			return currentDate.setMinutes(30);
 		}
 	}
+
 	const [nextTimeSlotStart, setNextTimeSlotStart] =
 		useState(getNextTimeSlotStart);
 	const [nextTimeSlotEnd, setNextTimeSlotEnd] = useState(getNextTimeSlotEnd);
