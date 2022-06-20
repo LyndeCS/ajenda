@@ -21,17 +21,35 @@ function App() {
 		setTasks([...tasks, newTask]);
 	}
 
-	function addScheduledTask(task) {
-		console.log(task);
+	function addAppointment(appointment) {
 		const newTask = {
 			id: "task-" + nanoid(),
-			desc: task.title,
+			desc: appointment.title,
 			completed: false,
 			category: "scheduled",
-			startDate: task.startDate,
-			endDate: task.endDate,
+			startDate: appointment.startDate,
+			endDate: appointment.endDate,
 		};
 		setTasks([...tasks, newTask]);
+	}
+
+	function changeAppointment(appointment) {
+		const keys = Object.keys(appointment);
+		const id = keys[0];
+		const scheduledStart = appointment[id]["startDate"];
+		const scheduledEnd = appointment[id]["endDate"];
+
+		const updatedTasks = tasks.map((task) => {
+			if (id === task.id) {
+				return {
+					...task,
+					startDate: scheduledStart,
+					endDate: scheduledEnd,
+				};
+			}
+			return task;
+		});
+		setTasks(updatedTasks);
 	}
 
 	function saveTask(id, desc) {
@@ -112,10 +130,6 @@ function App() {
 		return count;
 	}
 
-	function handleSchedulerChanges(appointments) {
-		//console.log(appointments);
-	}
-
 	// Check task completion and endDate to determine if past due
 	function pastDue(task) {
 		// if task is completed, it is not past due
@@ -179,10 +193,11 @@ function App() {
 							startDate: task.startDate,
 							endDate: task.endDate,
 							title: task.desc,
+							id: task.id,
 						};
 					})}
-				handleSchedulerChanges={handleSchedulerChanges}
-				addScheduledTask={addScheduledTask}
+				addAppointment={addAppointment}
+				changeAppointment={changeAppointment}
 			/>
 		</div>
 	);

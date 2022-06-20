@@ -98,21 +98,19 @@ function ScheduleView(props) {
 	function commitChanges({ added, changed, deleted }) {
 		let data = props.appointments;
 		if (added) {
-			data = [...data, { id: "task-" + nanoid(), ...added }];
 			props.addScheduledTask(added);
 		}
 		if (changed) {
-			console.log(changed);
 			data = data.map((appointment) =>
 				changed[appointment.id]
 					? { ...appointment, ...changed[appointment.id] }
 					: appointment
 			);
+			props.changeAppointment(changed);
 		}
 		if (deleted !== undefined) {
 			data = data.filter((appointment) => appointment.id !== deleted);
 		}
-		props.handleSchedulerChanges(data);
 	}
 
 	const TimeIndicator = ({ top, ...restProps }) => (
