@@ -34,17 +34,15 @@ function App() {
 	}
 
 	function changeAppointment(appointment) {
-		const keys = Object.keys(appointment);
-		const id = keys[0];
-		const scheduledStart = appointment[id]["startDate"];
-		const scheduledEnd = appointment[id]["endDate"];
+		const idArr = Object.keys(appointment);
+		const id = idArr[0];
+		const changes = appointment[id];
 
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
 				return {
 					...task,
-					startDate: scheduledStart,
-					endDate: scheduledEnd,
+					...changes,
 				};
 			}
 			return task;
