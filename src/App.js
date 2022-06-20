@@ -50,6 +50,10 @@ function App() {
 		setTasks(updatedTasks);
 	}
 
+	function deleteAppointment(id) {
+		setTasks(tasks.filter((task) => task.id !== id));
+	}
+
 	function saveTask(id, desc) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
@@ -196,6 +200,7 @@ function App() {
 					})}
 				addAppointment={addAppointment}
 				changeAppointment={changeAppointment}
+				deleteAppointment={deleteAppointment}
 			/>
 		</div>
 	);

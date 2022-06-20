@@ -96,20 +96,15 @@ const Appointment = ({ children, style, ...restProps }) => (
 
 function ScheduleView(props) {
 	function commitChanges({ added, changed, deleted }) {
-		let data = props.appointments;
 		if (added) {
 			props.addScheduledTask(added);
 		}
 		if (changed) {
-			data = data.map((appointment) =>
-				changed[appointment.id]
-					? { ...appointment, ...changed[appointment.id] }
-					: appointment
-			);
 			props.changeAppointment(changed);
 		}
 		if (deleted !== undefined) {
-			data = data.filter((appointment) => appointment.id !== deleted);
+			//data = data.filter((appointment) => appointment.id !== deleted);
+			props.deleteAppointment(deleted);
 		}
 	}
 
