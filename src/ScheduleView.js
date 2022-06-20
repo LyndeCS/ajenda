@@ -1,5 +1,9 @@
-import React from "react";
-import { ViewState } from "@devexpress/dx-react-scheduler";
+import React, { useState } from "react";
+import {
+	ViewState,
+	EditingState,
+	IntegratedEditing,
+} from "@devexpress/dx-react-scheduler";
 import {
 	Scheduler,
 	DayView,
@@ -9,12 +13,19 @@ import {
 	ViewSwitcher,
 	DateNavigator,
 	Appointments,
+	AppointmentForm,
+	AppointmentTooltip,
+	ConfirmationDialog,
 	TodayButton,
 	CurrentTimeIndicator,
+	DragDropProvider,
+	EditRecurrenceMenu,
+	AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import "./css/ScheduleView.css";
 import classNames from "clsx";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
+import { nanoid } from "nanoid";
 
 const currentDate = new Date();
 const currentHour = Math.min(currentDate.getHours(), 15.5);
@@ -84,13 +95,25 @@ const Appointment = ({ children, style, ...restProps }) => (
 // );
 
 function ScheduleView(props) {
-	const schedulerData = props.tasks.map((task) => {
-		return {
-			startDate: task.startDate,
-			endDate: task.endDate,
-			title: task.desc,
-		};
-	});
+	function commitChanges({ added, changed, deleted }) {
+		let data = props.appointments;
+		if (added) {
+			data = [...data, { id: "task-" + nanoid(), ...added }];
+			props.addScheduledTask(added);
+		}
+		if (changed) {
+			console.log(changed);
+			data = data.map((appointment) =>
+				changed[appointment.id]
+					? { ...appointment, ...changed[appointment.id] }
+					: appointment
+			);
+		}
+		if (deleted !== undefined) {
+			data = data.filter((appointment) => appointment.id !== deleted);
+		}
+		props.handleSchedulerChanges(data);
+	}
 
 	const TimeIndicator = ({ top, ...restProps }) => (
 		<StyledDiv top={top} {...restProps}>
@@ -101,17 +124,25 @@ function ScheduleView(props) {
 
 	return (
 		<div className="schedule-container">
-			<Scheduler data={schedulerData}>
+			<Scheduler data={props.appointments}>
 				<ViewState />
-				<DayView startDayHour={currentHour} endDayHour={24} />
-				<WeekView startDayHour={currentHour} endDayHour={24} />
+				<EditingState onCommitChanges={commitChanges} />
+				<IntegratedEditing />
+				<EditRecurrenceMenu />
+				<DayView startDayHour={0} endDayHour={24} />
+				<WeekView startDayHour={0} endDayHour={24} />
 				<MonthView />
+				<ConfirmationDialog />
 				<Toolbar />
 				<DateNavigator />
 				{/* <TodayButton buttonComponent={CustomTodayButton} /> */}
 				<TodayButton />
 				<ViewSwitcher />
 				<Appointments appointmentComponent={Appointment} />
+				<AppointmentTooltip showOpenButton showDeleteButton />
+				<AppointmentForm />
+				<AllDayPanel />
+				<DragDropProvider />
 				<CurrentTimeIndicator indicatorComponent={TimeIndicator} />
 			</Scheduler>
 		</div>

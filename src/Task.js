@@ -69,20 +69,18 @@ function Task(props) {
 	const [nextTimeSlotStart, setNextTimeSlotStart] =
 		useState(getNextTimeSlotStart);
 	const [nextTimeSlotEnd, setNextTimeSlotEnd] = useState(getNextTimeSlotEnd);
-	const currDate = Date.now();
-	const timeInOneHour = new Date(currDate + 1 * 60 * 60 * 1000);
 
 	const [startDate, setStartDate] = useState(
-		props.startDate ? new Date(props.startDate) : new Date(currDate)
+		props.startDate ? new Date(props.startDate) : new Date()
 	);
 	const [endDate, setEndDate] = useState(
-		props.endDate ? new Date(props.endDate) : new Date(currDate)
+		props.endDate ? new Date(props.endDate) : new Date()
 	);
 	const [startTime, setStartTime] = useState(
-		props.startDate ? new Date(props.startDate) : new Date(currDate)
+		props.startDate ? new Date(props.startDate) : new Date()
 	);
 	const [endTime, setEndTime] = useState(
-		props.endDate ? new Date(props.endDate) : timeInOneHour
+		props.endDate ? new Date(props.endDate) : new Date()
 	);
 
 	function handleChange(e) {
@@ -117,40 +115,18 @@ function Task(props) {
 	function handleModalOpen(e) {
 		setNextTimeSlotStart(getNextTimeSlotStart);
 		setNextTimeSlotEnd(getNextTimeSlotEnd);
+		setStartTime(getNextTimeSlotStart);
+		setEndTime(getNextTimeSlotEnd);
 		setModalOpen(true);
 	}
 
 	function handleScheduleSubmit(e) {
-		//handleModalClose();
-		//props.saveTask(props.id, newDesc,);
-		const startYear = startDate.getFullYear();
-		const startMonth = startDate.getMonth();
-		const startDay = startDate.getDate();
-		const startHours = startTime.getHours();
-		const startMinutes = startTime.getMinutes();
-
-		// combine date and time to one number
-		const scheduledStartDate = new Date(
-			startYear,
-			startMonth,
-			startDay,
-			startHours,
-			startMinutes
-		);
-
-		const endYear = endDate.getFullYear();
-		const endMonth = endDate.getMonth();
-		const endDay = endDate.getDate();
-		const endHours = endTime.getHours();
-		const endMinutes = endTime.getMinutes();
-
-		const scheduledEndDate = new Date(
-			endYear,
-			endMonth,
-			endDay,
-			endHours,
-			endMinutes
-		);
+		const scheduledStartDate = new Date(startTime);
+		const scheduledEndDate = new Date(endTime);
+		scheduledStartDate.setSeconds(0);
+		scheduledStartDate.setMilliseconds(0);
+		scheduledEndDate.setSeconds(0);
+		scheduledEndDate.setMilliseconds(0);
 
 		props.scheduleTask(props.id, scheduledStartDate, scheduledEndDate);
 		setScheduled(true);
@@ -187,14 +163,14 @@ function Task(props) {
 					color="grey"
 				/>
 			</form>
-			<div className="task-button-container">
-				{/* <IconButton
+			{/* <div className="task-button-container">
+				<IconButton
 					aria-label="schedule"
 					className="schedule-button"
 					onClick={() => handleSchedule(props.id)}
 				>
 					<ScheduleIcon className="schedule-icon" />
-				</IconButton> */}
+				</IconButton>
 				<IconButton
 					aria-label="delete"
 					className="delete-button"
@@ -202,7 +178,7 @@ function Task(props) {
 				>
 					<DeleteIcon className="delete-icon" />
 				</IconButton>
-			</div>
+			</div> */}
 		</li>
 	);
 
@@ -264,7 +240,7 @@ function Task(props) {
 							<div className="start-time-picker">
 								<TimePicker
 									label="Start Time"
-									value={nextTimeSlotStart}
+									value={startTime}
 									onChange={(newValue) => {
 										setStartTime(newValue);
 									}}
@@ -274,7 +250,7 @@ function Task(props) {
 							<div className="end-time-picker">
 								<TimePicker
 									label="End Time"
-									value={nextTimeSlotEnd}
+									value={endTime}
 									onChange={(newValue) => {
 										setEndTime(newValue);
 									}}

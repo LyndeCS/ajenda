@@ -21,6 +21,19 @@ function App() {
 		setTasks([...tasks, newTask]);
 	}
 
+	function addScheduledTask(task) {
+		console.log(task);
+		const newTask = {
+			id: "task-" + nanoid(),
+			desc: task.title,
+			completed: false,
+			category: "scheduled",
+			startDate: task.startDate,
+			endDate: task.endDate,
+		};
+		setTasks([...tasks, newTask]);
+	}
+
 	function saveTask(id, desc) {
 		const updatedTasks = tasks.map((task) => {
 			if (id === task.id) {
@@ -99,6 +112,10 @@ function App() {
 		return count;
 	}
 
+	function handleSchedulerChanges(appointments) {
+		//console.log(appointments);
+	}
+
 	// Check task completion and endDate to determine if past due
 	function pastDue(task) {
 		// if task is completed, it is not past due
@@ -153,8 +170,20 @@ function App() {
 				countTasks={countTasks}
 				scheduleTask={scheduleTask}
 			/>
-			{/* fixme: task.category === "scheduled" */}
-			<ScheduleView tasks={tasks.filter((task) => task.startDate)} />
+			<ScheduleView
+				tasks={tasks.filter((task) => task.category === "scheduled")}
+				appointments={tasks
+					.filter((task) => task.category === "scheduled")
+					.map((task) => {
+						return {
+							startDate: task.startDate,
+							endDate: task.endDate,
+							title: task.desc,
+						};
+					})}
+				handleSchedulerChanges={handleSchedulerChanges}
+				addScheduledTask={addScheduledTask}
+			/>
 		</div>
 	);
 }
