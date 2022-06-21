@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	ViewState,
 	EditingState,
@@ -25,7 +25,6 @@ import {
 import "./css/ScheduleView.css";
 import classNames from "clsx";
 import { styled } from "@mui/material/styles";
-import { nanoid } from "nanoid";
 
 const currentDate = new Date();
 const currentHour = Math.min(currentDate.getHours(), 15.5);
@@ -40,6 +39,10 @@ const classes = {
 	shadedPart: `${PREFIX}-shadedPart`,
 	appointment: `${PREFIX}-appointment`,
 	shadedAppointment: `${PREFIX}-shadedAppointment`,
+	todayCell: `${PREFIX}-todayCell`,
+	weekendCell: `${PREFIX}-weekendCell`,
+	today: `${PREFIX}-today`,
+	weekend: `${PREFIX}-weekend`,
 };
 const StyledDiv = styled("div", {
 	shouldForwardProp: (prop) => prop !== "top",
@@ -79,31 +82,91 @@ const Appointment = ({ children, style, ...restProps }) => (
 	</Appointments.Appointment>
 );
 
-// const CustomTodayButton = ({ children, style, ...restProps }) => (
-// 	<TodayButton.Button
-// 		{...restProps}
-// 		style={{
-// 			...style,
-// 			color: "white",
-// 			backgroundColor: "#00BE91",
-// 			fontSize: 14,
-// 			fontFamily: "Quicksand",
-// 		}}
-// 	>
-// 		{children}
-// 	</TodayButton.Button>
-// );
+const CustomTodayButton = ({ children, style, ...restProps }) => (
+	<TodayButton.Button
+		{...restProps}
+		style={{
+			...style,
+			color: "#00BE91",
+			backgroundColor: "white",
+			fontSize: 16,
+			fontFamily: "Quicksand",
+			borderTop: 1,
+			borderRight: 1,
+			borderBottom: 1,
+			borderLeft: 1,
+			borderTopColor: "#00BE91",
+			borderRightColor: "#00BE91",
+			borderBottomColor: "#00BE91",
+			borderLeftColor: "#00BE91",
+		}}
+	>
+		{children}
+	</TodayButton.Button>
+);
+
+const CustomNavigationButton = ({ children, style, ...restProps }) => (
+	<DateNavigator.NavigationButton
+		{...restProps}
+		style={{
+			...style,
+			color: "#00BE91",
+		}}
+	>
+		{children}
+	</DateNavigator.NavigationButton>
+);
+
+const CustomNavigatorOpenButton = ({ children, style, ...restProps }) => (
+	<DateNavigator.OpenButton
+		{...restProps}
+		style={{
+			...style,
+			color: "#00BE91",
+			fontSize: 16,
+		}}
+	>
+		{children}
+	</DateNavigator.OpenButton>
+);
+
+const StyledDayViewDayScaleCell = styled(DayView.DayScaleCell)(({ theme }) => ({
+	[`&.${classes.today}`]: {
+		color: "#00BE91",
+	},
+}));
+
+const StyledDayViewDayScaleRow = styled(DayView.DayScaleRow)(({ theme }) => ({
+	[`&.${classes.today}`]: {
+		color: "#00BE91",
+	},
+}));
+
+const DayScaleCell = (props) => {
+	const { startDate, today } = props;
+
+	if (today) {
+		return <StyledDayViewDayScaleCell {...props} className={classes.today} />;
+	}
+	if (startDate.getDay() === 0 || startDate.getDay() === 6) {
+		return <StyledDayViewDayScaleCell {...props} className={classes.weekend} />;
+	}
+	return <StyledDayViewDayScaleCell {...props} />;
+};
+
+const DayScaleRow = (props) => {
+	return <StyledDayViewDayScaleRow {...props} />;
+};
 
 function ScheduleView(props) {
 	function commitChanges({ added, changed, deleted }) {
 		if (added) {
-			props.addScheduledTask(added);
+			props.addAppointment(added);
 		}
 		if (changed) {
 			props.changeAppointment(changed);
 		}
 		if (deleted !== undefined) {
-			//data = data.filter((appointment) => appointment.id !== deleted);
 			props.deleteAppointment(deleted);
 		}
 	}
@@ -122,14 +185,21 @@ function ScheduleView(props) {
 				<EditingState onCommitChanges={commitChanges} />
 				<IntegratedEditing />
 				<EditRecurrenceMenu />
-				<DayView startDayHour={0} endDayHour={24} />
-				<WeekView startDayHour={0} endDayHour={24} />
+				<DayView
+					dayScaleRowComponent={DayScaleRow}
+					dayScaleCellComponent={DayScaleCell}
+					startDayHour={currentHour}
+					endDayHour={24}
+				/>
+				<WeekView startDayHour={currentHour} endDayHour={24} />
 				<MonthView />
 				<ConfirmationDialog />
 				<Toolbar />
-				<DateNavigator />
-				{/* <TodayButton buttonComponent={CustomTodayButton} /> */}
-				<TodayButton />
+				<DateNavigator
+					openButtonComponent={CustomNavigatorOpenButton}
+					navigationButtonComponent={CustomNavigationButton}
+				/>
+				<TodayButton buttonComponent={CustomTodayButton} />
 				<ViewSwitcher />
 				<Appointments appointmentComponent={Appointment} />
 				<AppointmentTooltip showOpenButton showDeleteButton />
