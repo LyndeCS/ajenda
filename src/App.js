@@ -132,6 +132,13 @@ function App() {
 		return count;
 	}
 
+	function handleDnd(dndTaskArray) {
+		const nonScheduledTasks = tasks.filter(
+			(task) => task.category !== "unscheduled"
+		);
+		setTasks([...nonScheduledTasks, ...dndTaskArray]);
+	}
+
 	// Check task completion and endDate to determine if past due
 	function pastDue(task) {
 		// if task is completed, it is not past due
@@ -185,9 +192,9 @@ function App() {
 				completeTask={completeTask}
 				countTasks={countTasks}
 				scheduleTask={scheduleTask}
+				handleDnd={handleDnd}
 			/>
 			<ScheduleView
-				tasks={tasks.filter((task) => task.category === "scheduled")}
 				appointments={tasks
 					.filter((task) => task.category === "scheduled")
 					.map((task) => {

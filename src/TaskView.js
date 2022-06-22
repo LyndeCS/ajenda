@@ -60,6 +60,7 @@ function TaskView(props) {
 				deleteTask={props.deleteTask}
 				countTasks={props.countTasks}
 				scheduleTask={props.scheduleTask}
+				handleDnd={props.handleDnd}
 			/>
 		));
 

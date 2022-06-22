@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import theme from "./theme";
 import Timeframe from "./Timeframe";
+import { Draggable } from "react-beautiful-dnd";
 
 //fixme: refactor
 const style = {
@@ -280,7 +281,122 @@ function Task(props) {
 		</li>
 	);
 
-	return isEditing ? editingTemplate : viewTemplate;
+	const dndViewTemplate = (
+		<Draggable key={props.id} draggableId={props.id} index={props.index}>
+			{(provided) => (
+				<li
+					ref={provided.innerRef}
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					className="task"
+					onClick={handleClick}
+				>
+					<Checkbox
+						sx={{
+							color: "#00BE91",
+							"&.Mui-checked": {
+								color: "#00BE91",
+							},
+						}}
+						checked={props.completed ? true : false}
+						onClick={() => props.completeTask(props.id)}
+					/>
+					<div
+						className={
+							props.completed
+								? "task-desc completed-true"
+								: "task-desc completed-false"
+						}
+					>
+						{props.desc}
+					</div>
+					{isScheduled && (
+						<Timeframe startDate={props.startDate} endDate={props.endDate} />
+					)}
+					<div className="task-button-container">
+						<IconButton
+							aria-label="schedule"
+							className="schedule-button"
+							onClick={handleModalOpen}
+						>
+							<ScheduleIcon className="schedule-icon" />
+						</IconButton>
+						<Modal open={isModalOpen} onClose={handleModalClose}>
+							<Box sx={style}>
+								<LocalizationProvider dateAdapter={AdapterDateFns}>
+									<div className="start-date-picker">
+										<DatePicker
+											label="Start Date"
+											value={startDate}
+											onChange={(newValue) => {
+												setStartDate(newValue);
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</div>
+									<div className="end-date-picker">
+										<DatePicker
+											label="End Date"
+											value={endDate}
+											onChange={(newValue) => {
+												setEndDate(newValue);
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</div>
+									<div className="start-time-picker">
+										<TimePicker
+											label="Start Time"
+											value={startTime}
+											onChange={(newValue) => {
+												setStartTime(newValue);
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</div>
+									<div className="end-time-picker">
+										<TimePicker
+											label="End Time"
+											value={endTime}
+											onChange={(newValue) => {
+												setEndTime(newValue);
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</div>
+								</LocalizationProvider>
+								<ThemeProvider theme={theme}>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={handleScheduleSubmit}
+									>
+										Schedule Task
+									</Button>
+								</ThemeProvider>
+							</Box>
+						</Modal>
+						<IconButton
+							aria-label="delete"
+							className="delete-button"
+							onClick={() => props.deleteTask(props.id)}
+						>
+							<DeleteIcon className="delete-icon" />
+						</IconButton>
+					</div>
+				</li>
+			)}
+		</Draggable>
+	);
+
+	//return isEditing ? editingTemplate : viewTemplate;
+	if (isEditing) {
+		return editingTemplate;
+	} else if (props.category === "unscheduled") {
+		return dndViewTemplate;
+	} else {
+		return viewTemplate;
+	}
 }
 
 export default Task;
