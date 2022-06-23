@@ -22,10 +22,9 @@ function Timeframe(props) {
 		) {
 			date = "Today";
 		} else {
-			date =
-				new Intl.DateTimeFormat("en-US", options).format(startDate.getMonth()) +
-				" " +
-				startDate.getDate();
+			date = new Intl.DateTimeFormat("en-US", options)
+				.format(startDate)
+				.concat(" " + startDate.getDate());
 		}
 
 		return date;

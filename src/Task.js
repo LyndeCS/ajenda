@@ -114,18 +114,23 @@ function Task(props) {
 	}
 
 	function handleModalOpen(e) {
-		setNextTimeSlotStart(getNextTimeSlotStart);
-		setNextTimeSlotEnd(getNextTimeSlotEnd);
-		setStartTime(getNextTimeSlotStart);
-		setEndTime(getNextTimeSlotEnd);
+		setNextTimeSlotStart(new Date(getNextTimeSlotStart()));
+		setNextTimeSlotEnd(new Date(getNextTimeSlotEnd()));
+		setStartTime(new Date(getNextTimeSlotStart()));
+		setEndTime(new Date(getNextTimeSlotEnd()));
 		setModalOpen(true);
 	}
 
 	function handleScheduleSubmit(e) {
-		const scheduledStartDate = new Date(startTime);
-		const scheduledEndDate = new Date(endTime);
+		const scheduledStartDate = startDate;
+		const scheduledEndDate = endDate;
+		scheduledStartDate.setHours(startTime.getHours());
+		scheduledStartDate.setMinutes(startTime.getMinutes());
 		scheduledStartDate.setSeconds(0);
 		scheduledStartDate.setMilliseconds(0);
+
+		scheduledEndDate.setHours(endTime.getHours());
+		scheduledEndDate.setMinutes(endTime.getMinutes());
 		scheduledEndDate.setSeconds(0);
 		scheduledEndDate.setMilliseconds(0);
 
@@ -204,9 +209,7 @@ function Task(props) {
 			>
 				{props.desc}
 			</div>
-			{isScheduled && (
-				<Timeframe startDate={props.startDate} endDate={props.endDate} />
-			)}
+			{isScheduled && <Timeframe startDate={startDate} endDate={endDate} />}
 			<div className="task-button-container">
 				<IconButton
 					aria-label="schedule"

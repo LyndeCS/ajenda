@@ -6,7 +6,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 function TaskGroup(props) {
-	//fixme
+	//fixme: setCollapsed is never used
 	const [isCollapsed, setCollapsed] = useState(props.collapsed);
 	const [dndTaskList, setDndTaskList] = useState(
 		props.tasks.filter((task) => task.category === "unscheduled")
