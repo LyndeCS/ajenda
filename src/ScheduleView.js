@@ -87,7 +87,7 @@ const CustomTodayButton = ({ children, style, ...restProps }) => (
 		{...restProps}
 		style={{
 			...style,
-			color: "#00BE91",
+			color: "black",
 			backgroundColor: "white",
 			fontSize: 16,
 			fontFamily: "Quicksand",
@@ -110,7 +110,7 @@ const CustomNavigationButton = ({ children, style, ...restProps }) => (
 		{...restProps}
 		style={{
 			...style,
-			color: "#00BE91",
+			color: "black",
 		}}
 	>
 		{children}
@@ -122,7 +122,7 @@ const CustomNavigatorOpenButton = ({ children, style, ...restProps }) => (
 		{...restProps}
 		style={{
 			...style,
-			color: "#00BE91",
+			color: "black",
 			fontSize: 16,
 		}}
 	>

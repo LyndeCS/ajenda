@@ -30,6 +30,8 @@ const style = {
 	border: "2px solid #000",
 	boxShadow: 24,
 	p: 4,
+	display: "flex",
+	flexDirection: "column",
 };
 
 function Task(props) {
@@ -221,45 +223,49 @@ function Task(props) {
 				<Modal open={isModalOpen} onClose={handleModalClose}>
 					<Box sx={style}>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<div className="start-date-picker">
-								<DatePicker
-									label="Start Date"
-									value={startDate}
-									onChange={(newValue) => {
-										setStartDate(newValue);
-									}}
-									renderInput={(params) => <TextField {...params} />}
-								/>
+							<div className="start-pickers">
+								<div className="start-date-picker">
+									<DatePicker
+										label="Start Date"
+										value={startDate}
+										onChange={(newValue) => {
+											setStartDate(newValue);
+										}}
+										renderInput={(params) => <TextField {...params} />}
+									/>
+								</div>
+								<div className="start-time-picker">
+									<TimePicker
+										label="Start Time"
+										value={startTime}
+										onChange={(newValue) => {
+											setStartTime(newValue);
+										}}
+										renderInput={(params) => <TextField {...params} />}
+									/>
+								</div>
 							</div>
-							<div className="end-date-picker">
-								<DatePicker
-									label="End Date"
-									value={endDate}
-									onChange={(newValue) => {
-										setEndDate(newValue);
-									}}
-									renderInput={(params) => <TextField {...params} />}
-								/>
-							</div>
-							<div className="start-time-picker">
-								<TimePicker
-									label="Start Time"
-									value={startTime}
-									onChange={(newValue) => {
-										setStartTime(newValue);
-									}}
-									renderInput={(params) => <TextField {...params} />}
-								/>
-							</div>
-							<div className="end-time-picker">
-								<TimePicker
-									label="End Time"
-									value={endTime}
-									onChange={(newValue) => {
-										setEndTime(newValue);
-									}}
-									renderInput={(params) => <TextField {...params} />}
-								/>
+							<div className="end-pickers">
+								<div className="end-date-picker">
+									<DatePicker
+										label="End Date"
+										value={endDate}
+										onChange={(newValue) => {
+											setEndDate(newValue);
+										}}
+										renderInput={(params) => <TextField {...params} />}
+									/>
+								</div>
+								<div className="end-time-picker">
+									<TimePicker
+										label="End Time"
+										value={endTime}
+										onChange={(newValue) => {
+											setEndTime(newValue);
+										}}
+										renderInput={(params) => <TextField {...params} />}
+									/>
+								</div>
 							</div>
 						</LocalizationProvider>
 						<ThemeProvider theme={theme}>
@@ -313,9 +319,7 @@ function Task(props) {
 					>
 						{props.desc}
 					</div>
-					{isScheduled && (
-						<Timeframe startDate={props.startDate} endDate={props.endDate} />
-					)}
+					{isScheduled && <Timeframe startDate={startDate} endDate={endDate} />}
 					<div className="task-button-container">
 						<IconButton
 							aria-label="schedule"
@@ -327,49 +331,54 @@ function Task(props) {
 						<Modal open={isModalOpen} onClose={handleModalClose}>
 							<Box sx={style}>
 								<LocalizationProvider dateAdapter={AdapterDateFns}>
-									<div className="start-date-picker">
-										<DatePicker
-											label="Start Date"
-											value={startDate}
-											onChange={(newValue) => {
-												setStartDate(newValue);
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
+									<div className="start-pickers">
+										<div className="start-date-picker">
+											<DatePicker
+												label="Start Date"
+												value={startDate}
+												onChange={(newValue) => {
+													setStartDate(newValue);
+												}}
+												renderInput={(params) => <TextField {...params} />}
+											/>
+										</div>
+										<div className="start-time-picker">
+											<TimePicker
+												label="Start Time"
+												value={startTime}
+												onChange={(newValue) => {
+													setStartTime(newValue);
+												}}
+												renderInput={(params) => <TextField {...params} />}
+											/>
+										</div>
 									</div>
-									<div className="end-date-picker">
-										<DatePicker
-											label="End Date"
-											value={endDate}
-											onChange={(newValue) => {
-												setEndDate(newValue);
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</div>
-									<div className="start-time-picker">
-										<TimePicker
-											label="Start Time"
-											value={startTime}
-											onChange={(newValue) => {
-												setStartTime(newValue);
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</div>
-									<div className="end-time-picker">
-										<TimePicker
-											label="End Time"
-											value={endTime}
-											onChange={(newValue) => {
-												setEndTime(newValue);
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
+									<div className="end-pickers">
+										<div className="end-date-picker">
+											<DatePicker
+												label="End Date"
+												value={endDate}
+												onChange={(newValue) => {
+													setEndDate(newValue);
+												}}
+												renderInput={(params) => <TextField {...params} />}
+											/>
+										</div>
+										<div className="end-time-picker">
+											<TimePicker
+												label="End Time"
+												value={endTime}
+												onChange={(newValue) => {
+													setEndTime(newValue);
+												}}
+												renderInput={(params) => <TextField {...params} />}
+											/>
+										</div>
 									</div>
 								</LocalizationProvider>
 								<ThemeProvider theme={theme}>
 									<Button
+										className="schedule-modal-button"
 										variant="contained"
 										color="primary"
 										onClick={handleScheduleSubmit}

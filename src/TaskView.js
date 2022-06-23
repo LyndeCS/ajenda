@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TaskGroup from "./TaskGroup";
+import MobileFooter from "./MobileFooter";
 import { Divider, Button, ThemeProvider } from "@mui/material";
 import "./css/TaskView.css";
 import theme from "./theme";
@@ -109,6 +110,7 @@ function TaskView(props) {
 					{footerTaskGroups}
 				</div>
 			</div>
+			<MobileFooter />
 		</div>
 	);
 }

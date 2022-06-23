@@ -10,6 +10,12 @@
 	flex-direction: column;
 }
 
+@media only screen and (max-width: 768px) {
+	.task-container {
+		width: 100%;
+	}
+}
+
 h1,
 h2 {
 	font-family: "Quicksand", sans-serif;
@@ -36,6 +42,12 @@ h2 {
 
 .task-body {
 	flex: 1;
+}
+
+@media only screen and (max-width: 768px) {
+	.task-body {
+		flex: 0;
+	}
 }
 
 .task-footer {
