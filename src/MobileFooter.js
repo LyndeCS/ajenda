@@ -26,13 +26,17 @@ const scheduleViewButtonStyle = {
 };
 
 const addCircleIconStyle = {
-	color: "white",
-	fontSize: 80,
+	color: "#00BE91",
+	fontSize: 110,
+	position: "absolute",
+	zIndex: 2,
 };
 
 const circleIconStyle = {
 	color: "white",
-	fontSize: 100,
+	fontSize: 150,
+	position: "absolute",
+	zIndex: 1,
 };
 
 function MobileFooter(props) {
@@ -48,32 +52,35 @@ function MobileFooter(props) {
 
 	return (
 		<div className="mobile-footer">
-			<Box sx={boxStyle}>
-				<IconButton
-					aria-label="task view"
-					className="task-view-button"
-					onClick={handleTaskViewButton}
-				>
-					<AssignmentIcon sx={taskViewButtonStyle} />
-				</IconButton>
-
+			<div className="mobile-footer-upper">
 				<IconButton
 					aria-label="add task"
 					className="mobile-add-task-button"
 					onClick={handleAddTaskButton}
 				>
 					<AddCircleIcon className="add-circle-icon" sx={addCircleIconStyle} />
-					{/* <CircleIcon className="white-circle" sx={circleIconStyle} /> */}
+					<CircleIcon className="white-circle" sx={circleIconStyle} />
 				</IconButton>
+			</div>
+			<div className="mobile-footer-lower">
+				<Box sx={boxStyle}>
+					<IconButton
+						aria-label="task view"
+						className="task-view-button"
+						onClick={handleTaskViewButton}
+					>
+						<AssignmentIcon sx={taskViewButtonStyle} />
+					</IconButton>
 
-				<IconButton
-					aria-label="schedule view"
-					className="schedule-view-button"
-					onClick={handleScheduleViewButton}
-				>
-					<CalendarMonthIcon sx={scheduleViewButtonStyle} />
-				</IconButton>
-			</Box>
+					<IconButton
+						aria-label="schedule view"
+						className="schedule-view-button"
+						onClick={handleScheduleViewButton}
+					>
+						<CalendarMonthIcon sx={scheduleViewButtonStyle} />
+					</IconButton>
+				</Box>
+			</div>
 		</div>
 	);
 }
