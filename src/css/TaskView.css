@@ -10,11 +10,7 @@
 	flex-direction: column;
 }
 
-@media only screen and (max-width: 768px) {
-	.task-container {
-		width: 100%;
-	}
-}
+
 
 h1,
 h2 {
@@ -44,11 +40,7 @@ h2 {
 	flex: 1;
 }
 
-@media only screen and (max-width: 768px) {
-	.task-body {
-		flex: 0;
-	}
-}
+
 
 .task-footer {
 	padding-top: 1em;
@@ -56,7 +48,6 @@ h2 {
 
 .add-task-button {
 	margin-left: 3.5em !important;
-	display: block;
 }
 
 ul {
@@ -68,4 +59,22 @@ ul {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+	.task-container {
+		width: 100%;
+	}
+
+	.task-body {
+		flex: 0;
+	}
+
+	.task-footer {
+		flex: 1;
+	}
+
+	.add-task-button{
+		display: none !important;
+	}
 }
