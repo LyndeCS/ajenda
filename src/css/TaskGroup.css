@@ -10,3 +10,12 @@
 .taskgroup-header:hover {
 	cursor: pointer;
 }
+
+.TaskGroup.unscheduled {
+	margin-bottom: 1em;
+}
+
+/* .taskgroup-header-groupname {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+} */

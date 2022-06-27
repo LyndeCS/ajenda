@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import TaskGroup from "./TaskGroup";
-import MobileFooter from "./MobileFooter";
 import { Divider, Button, ThemeProvider } from "@mui/material";
 import "./css/TaskView.css";
 import theme from "./theme";
@@ -89,28 +88,23 @@ function TaskView(props) {
 			</div>
 			<Divider />
 
-			<div className="task-groups">
-				<div className="task-body">
-					{headerTaskGroups}
+			<div className="task-body">
+				{headerTaskGroups}
 
-					<ThemeProvider theme={theme}>
-						<Button
-							className="add-task-button"
-							variant="contained"
-							color="primary"
-							onClick={createTask}
-						>
-							Add Task
-						</Button>
-					</ThemeProvider>
-				</div>
-
-				<div className="task-footer">
-					<Divider />
-					{footerTaskGroups}
-				</div>
+				<ThemeProvider theme={theme}>
+					<Button
+						className="add-task-button"
+						variant="contained"
+						color="primary"
+						onClick={createTask}
+					>
+						Add Task
+					</Button>
+				</ThemeProvider>
 			</div>
-			<MobileFooter createTask={createTask} />
+
+			<Divider />
+			<div className="task-footer">{footerTaskGroups}</div>
 		</div>
 	);
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TaskView from "./TaskView";
 import ScheduleView from "./ScheduleView";
+import MobileFooter from "./MobileFooter";
 import { nanoid } from "nanoid";
 import "./css/App.css";
 
@@ -8,6 +9,8 @@ const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
 	const [tasks, setTasks] = useState([]);
+	const [taskViewActive, setTaskViewActive] = useState(true);
+	const [scheduleViewActive, setScheduleViewActive] = useState(true);
 
 	function addTask(desc) {
 		const newTask = {
@@ -184,31 +187,36 @@ function App() {
 
 	return (
 		<div className="App">
-			<TaskView
-				tasks={tasks}
-				addTask={addTask}
-				deleteTask={deleteTask}
-				saveTask={saveTask}
-				completeTask={completeTask}
-				countTasks={countTasks}
-				scheduleTask={scheduleTask}
-				handleDnd={handleDnd}
-			/>
-			<ScheduleView
-				appointments={tasks
-					.filter((task) => task.category === "scheduled")
-					.map((task) => {
-						return {
-							startDate: task.startDate,
-							endDate: task.endDate,
-							title: task.desc,
-							id: task.id,
-						};
-					})}
-				addAppointment={addAppointment}
-				changeAppointment={changeAppointment}
-				deleteAppointment={deleteAppointment}
-			/>
+			{taskViewActive && (
+				<TaskView
+					tasks={tasks}
+					addTask={addTask}
+					deleteTask={deleteTask}
+					saveTask={saveTask}
+					completeTask={completeTask}
+					countTasks={countTasks}
+					scheduleTask={scheduleTask}
+					handleDnd={handleDnd}
+				/>
+			)}
+			{scheduleViewActive && (
+				<ScheduleView
+					appointments={tasks
+						.filter((task) => task.category === "scheduled")
+						.map((task) => {
+							return {
+								startDate: task.startDate,
+								endDate: task.endDate,
+								title: task.desc,
+								id: task.id,
+							};
+						})}
+					addAppointment={addAppointment}
+					changeAppointment={changeAppointment}
+					deleteAppointment={deleteAppointment}
+				/>
+			)}
+			<MobileFooter />
 		</div>
 	);
 }

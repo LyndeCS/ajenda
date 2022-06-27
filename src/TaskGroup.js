@@ -62,14 +62,15 @@ function TaskGroup(props) {
 		props.name.slice(1, props.name.length);
 
 	const collapsedTemplate = (
-		<div className="TaskGroup">
+		<div className={"TaskGroup " + props.name}>
 			<div
 				id={props.name}
 				className={"taskgroup-header"}
 				onClick={props.handleGroups}
 			>
 				<h2 className={props.name}>
-					{name} ({props.countTasks(props.name)})
+					<span className="taskgroup-header-groupname">{name}</span> (
+					{props.countTasks(props.name)})
 				</h2>
 				<ArrowDropDownIcon />
 			</div>
@@ -84,7 +85,8 @@ function TaskGroup(props) {
 				onClick={props.handleGroups}
 			>
 				<h2>
-					{name} ({props.countTasks(props.name)})
+					<span className="taskgroup-header-groupname">{name}</span> (
+					{props.countTasks(props.name)})
 				</h2>
 				<ArrowDropUpIcon />
 			</div>
@@ -101,7 +103,8 @@ function TaskGroup(props) {
 					onClick={props.handleGroups}
 				>
 					<h2>
-						{name} ({props.countTasks(props.name)})
+						<span className="taskgroup-header-groupname">{name}</span> (
+						{props.countTasks(props.name)})
 					</h2>
 					<ArrowDropUpIcon />
 				</div>

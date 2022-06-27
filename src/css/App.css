@@ -1,7 +1,24 @@
 .App {
 	display: flex;
+	flex-direction: row;
+	max-height: 100vh;
+	min-height: 100vh;
+}
+
+html {
+	height: 100%;
 }
 
 body {
+	min-height: 100%;
 	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	overflow-x: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+	.App {
+		flex-direction: column;
+	}
 }

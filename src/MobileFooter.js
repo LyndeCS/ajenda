@@ -9,8 +9,6 @@ import Box from "@mui/material/Box";
 
 const boxStyle = {
 	bgcolor: "#00BE91",
-	width: 1,
-	height: 1,
 	display: "flex",
 	justifyContent: "space-around",
 };
@@ -18,6 +16,8 @@ const boxStyle = {
 const taskViewButtonStyle = {
 	color: "white",
 	fontSize: 80,
+	border: 3,
+	borderRadius: "20%",
 };
 
 const scheduleViewButtonStyle = {
