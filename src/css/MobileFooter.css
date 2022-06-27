@@ -7,20 +7,20 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 20%;
+        height: 100px;
         margin: 0;
         padding: 0;
     }
 
     .mobile-footer-upper {
-        height: 30%;
+        height: 100px;
         width: 100%;
         display: flex;
         justify-content: space-around;
     }
 
     .mobile-footer-lower {
-        height: 70%;
+        height: 100%;
         flex: 1;
     }
 }

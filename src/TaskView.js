@@ -110,7 +110,7 @@ function TaskView(props) {
 					{footerTaskGroups}
 				</div>
 			</div>
-			<MobileFooter />
+			<MobileFooter createTask={createTask} />
 		</div>
 	);
 }

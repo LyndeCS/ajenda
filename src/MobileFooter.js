@@ -56,7 +56,7 @@ function MobileFooter(props) {
 				<IconButton
 					aria-label="add task"
 					className="mobile-add-task-button"
-					onClick={handleAddTaskButton}
+					onClick={props.createTask}
 				>
 					<AddCircleIcon className="add-circle-icon" sx={addCircleIconStyle} />
 					<CircleIcon className="white-circle" sx={circleIconStyle} />

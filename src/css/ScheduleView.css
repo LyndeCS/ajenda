@@ -8,3 +8,7 @@
 			display: none;
 		}
 }
+
+.Cell-highlightedText {
+	color: #00BE91 !important;
+}
