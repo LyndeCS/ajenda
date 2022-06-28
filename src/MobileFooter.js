@@ -16,6 +16,11 @@ const boxStyle = {
 const taskViewButtonStyle = {
 	color: "white",
 	fontSize: 80,
+};
+
+const taskViewActiveButtonStyle = {
+	color: "white",
+	fontSize: 80,
 	border: 3,
 	borderRadius: "20%",
 };
@@ -23,6 +28,13 @@ const taskViewButtonStyle = {
 const scheduleViewButtonStyle = {
 	color: "white",
 	fontSize: 80,
+};
+
+const scheduleViewActiveButtonStyle = {
+	color: "white",
+	fontSize: 80,
+	border: 3,
+	borderRadius: "20%",
 };
 
 const addCircleIconStyle = {
@@ -70,7 +82,13 @@ function MobileFooter(props) {
 						className="task-view-button"
 						onClick={handleTaskViewButton}
 					>
-						<AssignmentIcon sx={taskViewButtonStyle} />
+						<AssignmentIcon
+							sx={
+								props.taskViewActive
+									? taskViewActiveButtonStyle
+									: taskViewButtonStyle
+							}
+						/>
 					</IconButton>
 
 					<IconButton
@@ -78,7 +96,13 @@ function MobileFooter(props) {
 						className="schedule-view-button"
 						onClick={handleScheduleViewButton}
 					>
-						<CalendarMonthIcon sx={scheduleViewButtonStyle} />
+						<CalendarMonthIcon
+							sx={
+								props.scheduleViewActive
+									? scheduleViewActiveButtonStyle
+									: scheduleViewButtonStyle
+							}
+						/>
 					</IconButton>
 				</Box>
 			</div>

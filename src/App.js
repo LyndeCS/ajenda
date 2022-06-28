@@ -258,6 +258,8 @@ function App() {
 					addTask={addTask}
 					taskViewButton={handleTaskButton}
 					scheduleViewButton={handleScheduleButton}
+					taskViewActive={taskViewActive}
+					scheduleViewActive={scheduleViewActive}
 				/>
 			)}
 		</div>
