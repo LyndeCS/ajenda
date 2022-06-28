@@ -9,8 +9,30 @@ const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
 	const [tasks, setTasks] = useState([]);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [taskViewActive, setTaskViewActive] = useState(true);
-	const [scheduleViewActive, setScheduleViewActive] = useState(true);
+	const [scheduleViewActive, setScheduleViewActive] = useState(
+		isMobile ? false : true
+	);
+	// const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+	// const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+
+	const handleResize = () => {
+		if (window.innerWidth < 768) {
+			if (!isMobile) {
+				setIsMobile(true);
+				setScheduleViewActive(false);
+				setTaskViewActive(true);
+			}
+		} else if (window.innerWidth > 768) {
+			setIsMobile(false);
+			setTaskViewActive(true);
+			setScheduleViewActive(true);
+		}
+
+		// setScreenWidth(window.innerWidth);
+		// setScreenHeight(window.innerHeight);
+	};
 
 	function addTask(desc) {
 		const newTask = {
@@ -142,6 +164,16 @@ function App() {
 		setTasks([...nonScheduledTasks, ...dndTaskArray]);
 	}
 
+	const handleTaskButton = () => {
+		setTaskViewActive(true);
+		setScheduleViewActive(false);
+	};
+
+	const handleScheduleButton = () => {
+		setTaskViewActive(false);
+		setScheduleViewActive(true);
+	};
+
 	// Check task completion and endDate to determine if past due
 	function pastDue(task) {
 		// if task is completed, it is not past due
@@ -165,6 +197,11 @@ function App() {
 	useEffect(() => {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
 	}, [tasks]);
+
+	useEffect(() => {
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, [isMobile]);
 
 	// check for past due tasks every minute
 	// useEffect(() => {
@@ -216,7 +253,13 @@ function App() {
 					deleteAppointment={deleteAppointment}
 				/>
 			)}
-			<MobileFooter />
+			{isMobile && (
+				<MobileFooter
+					addTask={addTask}
+					taskViewButton={handleTaskButton}
+					scheduleViewButton={handleScheduleButton}
+				/>
+			)}
 		</div>
 	);
 }

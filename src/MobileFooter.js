@@ -41,13 +41,14 @@ const circleIconStyle = {
 
 function MobileFooter(props) {
 	const handleAddTaskButton = (e) => {
-		console.log("handleAddTaskButton fired");
+		//fixme: should expand "Unscheduled" group if it is collapsed
+		props.addTask("");
 	};
 	const handleTaskViewButton = (e) => {
-		console.log("handleTaskViewButton fired");
+		props.taskViewButton();
 	};
 	const handleScheduleViewButton = (e) => {
-		console.log("handleScheduleViewButton fired");
+		props.scheduleViewButton();
 	};
 
 	return (
@@ -56,7 +57,7 @@ function MobileFooter(props) {
 				<IconButton
 					aria-label="add task"
 					className="mobile-add-task-button"
-					onClick={props.createTask}
+					onClick={handleAddTaskButton}
 				>
 					<AddCircleIcon className="add-circle-icon" sx={addCircleIconStyle} />
 					<CircleIcon className="white-circle" sx={circleIconStyle} />
