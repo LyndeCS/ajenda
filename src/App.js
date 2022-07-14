@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import TaskView from "./TaskView";
 import ScheduleView from "./ScheduleView";
 import MobileFooter from "./MobileFooter";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
+import { AuthProvider } from "./contexts/AuthContext";
 import { nanoid } from "nanoid";
 import "./css/App.css";
 
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [tasks, setTasks] = useState([]);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [taskViewActive, setTaskViewActive] = useState(true);
@@ -223,46 +227,50 @@ function App() {
 	// }, [tasks]);
 
 	return (
-		<div className="App">
-			{taskViewActive && (
-				<TaskView
-					tasks={tasks}
-					addTask={addTask}
-					deleteTask={deleteTask}
-					saveTask={saveTask}
-					completeTask={completeTask}
-					countTasks={countTasks}
-					scheduleTask={scheduleTask}
-					handleDnd={handleDnd}
-				/>
-			)}
-			{scheduleViewActive && (
-				<ScheduleView
-					appointments={tasks
-						.filter((task) => task.category === "scheduled")
-						.map((task) => {
-							return {
-								startDate: task.startDate,
-								endDate: task.endDate,
-								title: task.desc,
-								id: task.id,
-							};
-						})}
-					addAppointment={addAppointment}
-					changeAppointment={changeAppointment}
-					deleteAppointment={deleteAppointment}
-				/>
-			)}
-			{isMobile && (
-				<MobileFooter
-					addTask={addTask}
-					taskViewButton={handleTaskButton}
-					scheduleViewButton={handleScheduleButton}
-					taskViewActive={taskViewActive}
-					scheduleViewActive={scheduleViewActive}
-				/>
-			)}
-		</div>
+		<AuthProvider>
+			<div className="App">
+				{/* <SignUp /> */}
+				<SignIn />
+				{isLoggedIn && taskViewActive && (
+					<TaskView
+						tasks={tasks}
+						addTask={addTask}
+						deleteTask={deleteTask}
+						saveTask={saveTask}
+						completeTask={completeTask}
+						countTasks={countTasks}
+						scheduleTask={scheduleTask}
+						handleDnd={handleDnd}
+					/>
+				)}
+				{isLoggedIn && scheduleViewActive && (
+					<ScheduleView
+						appointments={tasks
+							.filter((task) => task.category === "scheduled")
+							.map((task) => {
+								return {
+									startDate: task.startDate,
+									endDate: task.endDate,
+									title: task.desc,
+									id: task.id,
+								};
+							})}
+						addAppointment={addAppointment}
+						changeAppointment={changeAppointment}
+						deleteAppointment={deleteAppointment}
+					/>
+				)}
+				{isLoggedIn && isMobile && (
+					<MobileFooter
+						addTask={addTask}
+						taskViewButton={handleTaskButton}
+						scheduleViewButton={handleScheduleButton}
+						taskViewActive={taskViewActive}
+						scheduleViewActive={scheduleViewActive}
+					/>
+				)}
+			</div>
+		</AuthProvider>
 	);
 }
 

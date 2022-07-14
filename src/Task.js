@@ -142,7 +142,7 @@ function Task(props) {
 
 	const editingTemplate = (
 		<li className="task">
-			<form onSubmit={handleSubmit}>
+			<form className="task-edit-form" onSubmit={handleSubmit}>
 				<Checkbox
 					sx={{
 						color: "#00BE91",

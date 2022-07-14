@@ -19,7 +19,7 @@
 }
 
 /* fixme: task editing */
-form {
+.task-edit-form {
 	display: flex;
 	width: 88%;
 }

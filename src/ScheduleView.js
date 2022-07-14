@@ -188,10 +188,10 @@ function ScheduleView(props) {
 				<DayView
 					dayScaleRowComponent={DayScaleRow}
 					dayScaleCellComponent={DayScaleCell}
-					startDayHour={0}
+					startDayHour={currentHour}
 					endDayHour={24}
 				/>
-				<WeekView startDayHour={0} endDayHour={24} />
+				<WeekView startDayHour={currentHour} endDayHour={24} />
 				<MonthView />
 				<ConfirmationDialog />
 				<Toolbar />
