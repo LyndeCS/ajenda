@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,18 +11,32 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import { useAuth } from "./contexts/AuthContext";
+import { Link as RrdLink } from "react-router-dom";
 
-export default function SignIn() {
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		});
-	};
+export default function Login() {
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const { login } = useAuth();
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+
+	async function handleSubmit(e) {
+		e.preventDefault();
+
+		try {
+			setError("");
+			setLoading(true);
+			await login(emailRef.current.value, passwordRef.current.value);
+		} catch {
+			setError("Failed to sign in");
+		}
+
+		setLoading(false);
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -48,6 +62,7 @@ export default function SignIn() {
 						noValidate
 						sx={{ mt: 1 }}
 					>
+						{error && <Alert severity="error">{error}</Alert>}
 						<TextField
 							margin="normal"
 							required
@@ -57,6 +72,7 @@ export default function SignIn() {
 							name="email"
 							autoComplete="email"
 							autoFocus
+							inputRef={emailRef}
 						/>
 						<TextField
 							margin="normal"
@@ -67,6 +83,7 @@ export default function SignIn() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							inputRef={passwordRef}
 						/>
 						<FormControlLabel
 							control={<Checkbox value="remember" color="primary" />}
@@ -76,6 +93,7 @@ export default function SignIn() {
 							type="submit"
 							fullWidth
 							variant="contained"
+							disabled={loading}
 							sx={{ mt: 3, mb: 2 }}
 						>
 							Sign In
@@ -87,9 +105,11 @@ export default function SignIn() {
 								</Link>
 							</Grid>
 							<Grid item>
-								<Link href="#" variant="body2">
-									{"Don't have an account? Sign Up"}
-								</Link>
+								<RrdLink to="/signup">
+									<Link variant="body2">
+										{"Don't have an account? Sign Up"}
+									</Link>
+								</RrdLink>
 							</Grid>
 						</Grid>
 					</Box>
