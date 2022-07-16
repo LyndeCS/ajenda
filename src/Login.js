@@ -15,7 +15,7 @@ import Alert from "@mui/material/Alert";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { useAuth } from "./contexts/AuthContext";
-import { Link as RrdLink } from "react-router-dom";
+import { Link as RrdLink, useNavigate } from "react-router-dom";
 
 export default function Login() {
 	const emailRef = useRef();
@@ -23,6 +23,7 @@ export default function Login() {
 	const { login } = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	async function handleSubmit(e) {
 		e.preventDefault();
@@ -31,6 +32,7 @@ export default function Login() {
 			setError("");
 			setLoading(true);
 			await login(emailRef.current.value, passwordRef.current.value);
+			navigate("/");
 		} catch {
 			setError("Failed to sign in");
 		}
@@ -100,9 +102,9 @@ export default function Login() {
 						</Button>
 						<Grid container>
 							<Grid item xs>
-								<Link href="#" variant="body2">
-									Forgot password?
-								</Link>
+								<RrdLink to="/forgot-password">
+									<Link variant="body2">{"Forgot Password?"}</Link>
+								</RrdLink>
 							</Grid>
 							<Grid item>
 								<RrdLink to="/signup">

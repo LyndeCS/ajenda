@@ -4,8 +4,11 @@ import ScheduleView from "./ScheduleView";
 import MobileFooter from "./MobileFooter";
 import Signup from "./Signup";
 import Login from "./Login";
+import Dashboard from "./Dashboard";
+import ForgotPassword from "./ForgotPassword";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 import { nanoid } from "nanoid";
 import "./css/App.css";
 
@@ -232,12 +235,20 @@ function App() {
 			<Router>
 				<AuthProvider>
 					<Routes>
-						<Route path="/signup" element={<Signup />}></Route>
-						<Route path="/login" element={<Login />}></Route>
+						<Route
+							path="/"
+							element={
+								<PrivateRoute>
+									<Dashboard />
+								</PrivateRoute>
+							}
+						/>
+						<Route path="/signup" element={<Signup />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/forgot-password" element={<ForgotPassword />} />
 					</Routes>
 				</AuthProvider>
 			</Router>
-			{/* <SignIn /> */}
 			{isLoggedIn && taskViewActive && (
 				<TaskView
 					tasks={tasks}
