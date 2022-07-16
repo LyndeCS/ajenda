@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TaskView from "./TaskView";
 import ScheduleView from "./ScheduleView";
 import MobileFooter from "./MobileFooter";
+import Navbar from "./Navbar";
 import Signup from "./Signup";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
@@ -15,7 +16,6 @@ import "./css/App.css";
 const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [tasks, setTasks] = useState([]);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [taskViewActive, setTaskViewActive] = useState(true);
@@ -231,63 +231,65 @@ function App() {
 	// }, [tasks]);
 
 	return (
-		<div className="App">
-			<Router>
-				<AuthProvider>
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<PrivateRoute>
-									<Dashboard />
-								</PrivateRoute>
-							}
-						/>
-						<Route path="/signup" element={<Signup />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/forgot-password" element={<ForgotPassword />} />
-					</Routes>
-				</AuthProvider>
-			</Router>
-			{isLoggedIn && taskViewActive && (
-				<TaskView
-					tasks={tasks}
-					addTask={addTask}
-					deleteTask={deleteTask}
-					saveTask={saveTask}
-					completeTask={completeTask}
-					countTasks={countTasks}
-					scheduleTask={scheduleTask}
-					handleDnd={handleDnd}
-				/>
-			)}
-			{isLoggedIn && scheduleViewActive && (
-				<ScheduleView
-					appointments={tasks
-						.filter((task) => task.category === "scheduled")
-						.map((task) => {
-							return {
-								startDate: task.startDate,
-								endDate: task.endDate,
-								title: task.desc,
-								id: task.id,
-							};
-						})}
-					addAppointment={addAppointment}
-					changeAppointment={changeAppointment}
-					deleteAppointment={deleteAppointment}
-				/>
-			)}
-			{isLoggedIn && isMobile && (
-				<MobileFooter
-					addTask={addTask}
-					taskViewButton={handleTaskButton}
-					scheduleViewButton={handleScheduleButton}
-					taskViewActive={taskViewActive}
-					scheduleViewActive={scheduleViewActive}
-				/>
-			)}
-		</div>
+		<Router>
+			<AuthProvider>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<PrivateRoute>
+								<div className="App">
+									<Navbar />
+									<div className="view-container">
+										{taskViewActive && (
+											<TaskView
+												tasks={tasks}
+												addTask={addTask}
+												deleteTask={deleteTask}
+												saveTask={saveTask}
+												completeTask={completeTask}
+												countTasks={countTasks}
+												scheduleTask={scheduleTask}
+												handleDnd={handleDnd}
+											/>
+										)}
+										{scheduleViewActive && (
+											<ScheduleView
+												appointments={tasks
+													.filter((task) => task.category === "scheduled")
+													.map((task) => {
+														return {
+															startDate: task.startDate,
+															endDate: task.endDate,
+															title: task.desc,
+															id: task.id,
+														};
+													})}
+												addAppointment={addAppointment}
+												changeAppointment={changeAppointment}
+												deleteAppointment={deleteAppointment}
+											/>
+										)}
+										{isMobile && (
+											<MobileFooter
+												addTask={addTask}
+												taskViewButton={handleTaskButton}
+												scheduleViewButton={handleScheduleButton}
+												taskViewActive={taskViewActive}
+												scheduleViewActive={scheduleViewActive}
+											/>
+										)}
+									</div>
+								</div>
+							</PrivateRoute>
+						}
+					/>
+					<Route path="/signup" element={<Signup />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/forgot-password" element={<ForgotPassword />} />
+				</Routes>
+			</AuthProvider>
+		</Router>
 	);
 }
 
