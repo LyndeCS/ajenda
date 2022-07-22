@@ -270,16 +270,16 @@ function App() {
 												deleteAppointment={deleteAppointment}
 											/>
 										)}
-										{isMobile && (
-											<MobileFooter
-												addTask={addTask}
-												taskViewButton={handleTaskButton}
-												scheduleViewButton={handleScheduleButton}
-												taskViewActive={taskViewActive}
-												scheduleViewActive={scheduleViewActive}
-											/>
-										)}
 									</div>
+									{isMobile && (
+										<MobileFooter
+											addTask={addTask}
+											taskViewButton={handleTaskButton}
+											scheduleViewButton={handleScheduleButton}
+											taskViewActive={taskViewActive}
+											scheduleViewActive={scheduleViewActive}
+										/>
+									)}
 								</div>
 							</PrivateRoute>
 						}

@@ -55,10 +55,7 @@ ul {
 @media only screen and (max-width: 768px) {
 	.task-container {
 		width: 100%;
-		max-height: unset;
-		min-height: unset;
-		display: block;
-		flex: 1;
+		display: flex;
 	}
 
 	.task-body {
@@ -66,7 +63,7 @@ ul {
 	}
 
 	.task-footer {
-		flex: 0;
+		flex: 1;
 	}
 
 	.add-task-button{

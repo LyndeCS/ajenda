@@ -97,6 +97,7 @@ function TaskView(props) {
 						variant="contained"
 						color="primary"
 						onClick={createTask}
+						disableElevation
 					>
 						Add Task
 					</Button>

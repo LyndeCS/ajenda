@@ -10,6 +10,7 @@
 	flex-direction: row;
 	max-height: 100%;
 	min-height: 100%;
+	flex: 1;
 }
 
 html {
@@ -22,10 +23,4 @@ body {
 	padding: 0;
 	box-sizing: border-box;
 	overflow-x: hidden;
-}
-
-@media only screen and (max-width: 768px) {
-	.App {
-		flex-direction: column;
-	}
 }
