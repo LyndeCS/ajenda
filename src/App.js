@@ -5,7 +5,6 @@ import MobileFooter from "./MobileFooter";
 import Navbar from "./Navbar";
 import Signup from "./Signup";
 import Login from "./Login";
-import Dashboard from "./Dashboard";
 import ForgotPassword from "./ForgotPassword";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -22,8 +21,6 @@ function App() {
 	const [scheduleViewActive, setScheduleViewActive] = useState(
 		isMobile ? false : true
 	);
-	// const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-	// const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
 	const handleResize = () => {
 		if (window.innerWidth < 768) {
@@ -37,9 +34,6 @@ function App() {
 			setTaskViewActive(true);
 			setScheduleViewActive(true);
 		}
-
-		// setScreenWidth(window.innerWidth);
-		// setScreenHeight(window.innerHeight);
 	};
 
 	function addTask(desc) {

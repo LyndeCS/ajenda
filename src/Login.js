@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
+import NoAccountsIcon from "@mui/icons-material/NoAccounts";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { useAuth } from "./contexts/AuthContext";
@@ -99,6 +100,22 @@ export default function Login() {
 							sx={{ mt: 3, mb: 2 }}
 						>
 							Sign In
+						</Button>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							disabled={loading}
+							sx={{
+								mb: 2,
+								backgroundColor: "#919191",
+								"&:hover": {
+									backgroundColor: "black",
+								},
+							}}
+							endIcon={<NoAccountsIcon />}
+						>
+							Sign In Anonymously
 						</Button>
 						<Grid container>
 							<Grid item xs>
