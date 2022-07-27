@@ -21,7 +21,7 @@ import { Link as RrdLink, useNavigate } from "react-router-dom";
 export default function Login() {
 	const emailRef = useRef();
 	const passwordRef = useRef();
-	const { login } = useAuth();
+	const { login, loginAnonymously } = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
@@ -29,10 +29,16 @@ export default function Login() {
 	async function handleSubmit(e) {
 		e.preventDefault();
 
+		const loginType = e.nativeEvent.submitter.name;
+
 		try {
 			setError("");
 			setLoading(true);
-			await login(emailRef.current.value, passwordRef.current.value);
+			if (loginType === "anonymous") {
+				await loginAnonymously();
+			} else {
+				await login(emailRef.current.value, passwordRef.current.value);
+			}
 			navigate("/");
 		} catch {
 			setError("Failed to sign in");
@@ -94,6 +100,7 @@ export default function Login() {
 						/>
 						<Button
 							type="submit"
+							name="sign-in"
 							fullWidth
 							variant="contained"
 							disabled={loading}
@@ -103,6 +110,7 @@ export default function Login() {
 						</Button>
 						<Button
 							type="submit"
+							name="anonymous"
 							fullWidth
 							variant="contained"
 							disabled={loading}

@@ -19,6 +19,10 @@ export function AuthProvider({ children }) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
+	function loginAnonymously() {
+		return auth.signInAnonymously();
+	}
+
 	function logout() {
 		return auth.signOut();
 	}
@@ -39,6 +43,7 @@ export function AuthProvider({ children }) {
 	const value = {
 		currentUser,
 		login,
+		loginAnonymously,
 		signup,
 		logout,
 		resetPassword,
