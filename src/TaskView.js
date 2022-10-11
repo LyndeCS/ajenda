@@ -56,6 +56,7 @@ function TaskView(props) {
 				collapsed={group.collapsed}
 				handleGroups={handleGroups}
 				completeTask={props.completeTask}
+				uncompleteTask={props.uncompleteTask}
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
 				countTasks={props.countTasks}
@@ -74,6 +75,7 @@ function TaskView(props) {
 				collapsed={group.collapsed}
 				handleGroups={handleGroups}
 				completeTask={props.completeTask}
+				uncompleteTask={props.uncompleteTask}
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
 				countTasks={props.countTasks}

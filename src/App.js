@@ -6,13 +6,11 @@ import Navbar from "./Navbar";
 import Signup from "./Signup";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
-import { AuthProvider } from "./contexts/AuthContext";
+import { useAuth } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import { nanoid } from "nanoid";
+import { db } from "./firebase";
 import "./css/App.css";
-
-const LOCAL_STORAGE_KEY = "ajenda.tasks";
 
 function App() {
 	const [tasks, setTasks] = useState([]);
@@ -21,6 +19,7 @@ function App() {
 	const [scheduleViewActive, setScheduleViewActive] = useState(
 		isMobile ? false : true
 	);
+	const { currentUser } = useAuth();
 
 	const handleResize = () => {
 		if (window.innerWidth < 768) {
@@ -38,26 +37,32 @@ function App() {
 
 	function addTask(desc) {
 		const newTask = {
-			id: "task-" + nanoid(),
 			desc: desc,
 			completed: false,
 			category: "unscheduled",
 			startDate: "",
 			endDate: "",
 		};
-		setTasks([...tasks, newTask]);
+
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.add(newTask);
 	}
 
 	function addAppointment(appointment) {
 		const newTask = {
-			id: "task-" + nanoid(),
 			desc: appointment.title,
 			completed: false,
 			category: "scheduled",
 			startDate: appointment.startDate,
 			endDate: appointment.endDate,
 		};
-		setTasks([...tasks, newTask]);
+
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.add(newTask);
 	}
 
 	function changeAppointment(appointment) {
@@ -65,77 +70,70 @@ function App() {
 		const id = idArr[0];
 		const changes = appointment[id];
 
-		const updatedTasks = tasks.map((task) => {
-			if (id === task.id) {
-				return {
-					...task,
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.doc(id)
+			.set(
+				{
 					...changes,
-				};
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
+				},
+				{ merge: true }
+			);
 	}
 
 	function deleteAppointment(id) {
-		setTasks(tasks.filter((task) => task.id !== id));
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.doc(id)
+			.delete();
 	}
 
 	function saveTask(id, desc) {
-		const updatedTasks = tasks.map((task) => {
-			if (id === task.id) {
-				return {
-					...task,
-					desc: desc,
-				};
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
+		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
+			{
+				desc: desc,
+			},
+			{ merge: true }
+		);
 	}
 
 	function scheduleTask(id, scheduledStart, scheduledEnd) {
-		const updatedTasks = tasks.map((task) => {
-			if (id === task.id) {
-				return {
-					...task,
-					startDate: scheduledStart,
-					endDate: scheduledEnd,
-					category: "scheduled",
-				};
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
+		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
+			{
+				startDate: scheduledStart,
+				endDate: scheduledEnd,
+				category: "scheduled",
+			},
+			{ merge: true }
+		);
 	}
 
-	//fixme: verbose, will need to check for past schedule
 	function completeTask(id) {
-		const updatedTasks = tasks.map((task) => {
-			if (id === task.id) {
-				if (!task.completed) {
-					return {
-						...task,
-						completed: !task.completed,
-						category: !task.completed ? "completed" : task.category,
-					};
-				} else if (task.startDate === "") {
-					return {
-						...task,
-						completed: !task.completed,
-						category: !task.completed ? "completed" : "unscheduled",
-					};
-				} else if (task.startDate !== "") {
-					return {
-						...task,
-						completed: !task.completed,
-						category: !task.completed ? "completed" : "scheduled",
-					};
-				}
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
+		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
+			{
+				completed: true,
+				category: "completed",
+			},
+			{ merge: true }
+		);
+	}
+
+	function uncompleteTask(id) {
+		const currTask = tasks.find((task) => task.id === id);
+
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.doc(id)
+			.set(
+				{
+					completed: false,
+					category: currTask.startDate === "" ? "unscheduled" : "scheduled",
+				},
+				{ merge: true }
+			);
 	}
 
 	function deleteTask(id) {
@@ -144,13 +142,21 @@ function App() {
 		// prompt to confirm delete if task has description
 		if (taskToDelete.desc) {
 			if (window.confirm("Delete?")) {
-				setTasks(tasks.filter((task) => task.id !== id));
+				db.collection("users")
+					.doc(currentUser.uid)
+					.collection("tasks")
+					.doc(id)
+					.delete();
 			}
 		}
 
 		// delete task without prompt if it has no description
 		else {
-			setTasks(tasks.filter((task) => task.id !== id));
+			db.collection("users")
+				.doc(currentUser.uid)
+				.collection("tasks")
+				.doc(id)
+				.delete();
 		}
 	}
 
@@ -191,14 +197,30 @@ function App() {
 		return false;
 	}
 
-	// load saved tasks from local storage, or create new array if one does not exist
+	// A change to a task will cause a new snapshot and update the [tasks] state
 	useEffect(() => {
-		const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-		if (storedTasks) setTasks(storedTasks);
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.onSnapshot((snapshot) => {
+				const taskArr = snapshot.docs.map((doc) => {
+					const convertedStartDate =
+						doc.data().startDate !== "" ? doc.data().startDate.toDate() : "";
+					const convertedEndDate =
+						doc.data().endDate !== "" ? doc.data().endDate.toDate() : "";
+					return {
+						id: doc.id,
+						category: doc.data().category,
+						completed: doc.data().completed,
+						desc: doc.data().desc,
+						startDate: convertedStartDate,
+						endDate: convertedEndDate,
+						//...doc.data(),
+					};
+				});
+				setTasks(taskArr);
+			});
 	}, []);
-	useEffect(() => {
-		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
-	}, [tasks]);
 
 	useEffect(() => {
 		window.addEventListener("resize", handleResize);
@@ -226,63 +248,62 @@ function App() {
 
 	return (
 		<Router>
-			<AuthProvider>
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<PrivateRoute>
-								<div className="App">
-									<Navbar />
-									<div className="view-container">
-										{taskViewActive && (
-											<TaskView
-												tasks={tasks}
-												addTask={addTask}
-												deleteTask={deleteTask}
-												saveTask={saveTask}
-												completeTask={completeTask}
-												countTasks={countTasks}
-												scheduleTask={scheduleTask}
-												handleDnd={handleDnd}
-											/>
-										)}
-										{scheduleViewActive && (
-											<ScheduleView
-												appointments={tasks
-													.filter((task) => task.category === "scheduled")
-													.map((task) => {
-														return {
-															startDate: task.startDate,
-															endDate: task.endDate,
-															title: task.desc,
-															id: task.id,
-														};
-													})}
-												addAppointment={addAppointment}
-												changeAppointment={changeAppointment}
-												deleteAppointment={deleteAppointment}
-											/>
-										)}
-									</div>
-									{isMobile && (
-										<MobileFooter
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<PrivateRoute>
+							<div className="App">
+								<Navbar />
+								<div className="view-container">
+									{taskViewActive && (
+										<TaskView
+											tasks={tasks}
 											addTask={addTask}
-											taskViewButton={handleTaskButton}
-											scheduleViewButton={handleScheduleButton}
-											taskViewActive={taskViewActive}
-											scheduleViewActive={scheduleViewActive}
+											deleteTask={deleteTask}
+											saveTask={saveTask}
+											completeTask={completeTask}
+											uncompleteTask={uncompleteTask}
+											countTasks={countTasks}
+											scheduleTask={scheduleTask}
+											handleDnd={handleDnd}
+										/>
+									)}
+									{scheduleViewActive && (
+										<ScheduleView
+											appointments={tasks
+												.filter((task) => task.category === "scheduled")
+												.map((task) => {
+													return {
+														startDate: task.startDate,
+														endDate: task.endDate,
+														title: task.desc,
+														id: task.id,
+													};
+												})}
+											addAppointment={addAppointment}
+											changeAppointment={changeAppointment}
+											deleteAppointment={deleteAppointment}
 										/>
 									)}
 								</div>
-							</PrivateRoute>
-						}
-					/>
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/forgot-password" element={<ForgotPassword />} />
-				</Routes>
-			</AuthProvider>
+								{isMobile && (
+									<MobileFooter
+										addTask={addTask}
+										taskViewButton={handleTaskButton}
+										scheduleViewButton={handleScheduleButton}
+										taskViewActive={taskViewActive}
+										scheduleViewActive={scheduleViewActive}
+									/>
+								)}
+							</div>
+						</PrivateRoute>
+					}
+				/>
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/forgot-password" element={<ForgotPassword />} />
+			</Routes>
 		</Router>
 	);
 }

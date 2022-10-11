@@ -140,6 +140,14 @@ function Task(props) {
 		setScheduled(true);
 	}
 
+	function completeTask(e) {
+		if (e.target.checked) {
+			props.completeTask(props.id);
+		} else {
+			props.uncompleteTask(props.id);
+		}
+	}
+
 	const editingTemplate = (
 		<li className="task">
 			<form className="task-edit-form" onSubmit={handleSubmit}>
@@ -151,7 +159,7 @@ function Task(props) {
 						},
 					}}
 					checked={props.completed ? true : false}
-					onClick={() => props.completeTask(props.id)}
+					onChange={completeTask}
 				/>
 				<div
 					className={
@@ -200,7 +208,7 @@ function Task(props) {
 					},
 				}}
 				checked={props.completed ? true : false}
-				onClick={() => props.completeTask(props.id)}
+				onChange={completeTask}
 			/>
 			<div
 				className={
@@ -308,7 +316,7 @@ function Task(props) {
 							},
 						}}
 						checked={props.completed ? true : false}
-						onClick={() => props.completeTask(props.id)}
+						onChange={completeTask}
 					/>
 					<div
 						className={

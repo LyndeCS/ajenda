@@ -30,6 +30,7 @@ function TaskGroup(props) {
 				desc={task.desc}
 				completed={task.completed}
 				completeTask={props.completeTask}
+				uncompleteTask={props.uncompleteTask}
 				saveTask={props.saveTask}
 				deleteTask={props.deleteTask}
 				scheduleTask={props.scheduleTask}
@@ -47,6 +48,7 @@ function TaskGroup(props) {
 			desc={task.desc}
 			completed={task.completed}
 			completeTask={props.completeTask}
+			uncompleteTask={props.uncompleteTask}
 			saveTask={props.saveTask}
 			deleteTask={props.deleteTask}
 			scheduleTask={props.scheduleTask}
