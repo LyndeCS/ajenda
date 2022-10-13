@@ -199,28 +199,30 @@ function App() {
 
 	// A change to a task will cause a new snapshot and update the [tasks] state
 	useEffect(() => {
-		db.collection("users")
-			.doc(currentUser.uid)
-			.collection("tasks")
-			.onSnapshot((snapshot) => {
-				const taskArr = snapshot.docs.map((doc) => {
-					const convertedStartDate =
-						doc.data().startDate !== "" ? doc.data().startDate.toDate() : "";
-					const convertedEndDate =
-						doc.data().endDate !== "" ? doc.data().endDate.toDate() : "";
-					return {
-						id: doc.id,
-						category: doc.data().category,
-						completed: doc.data().completed,
-						desc: doc.data().desc,
-						startDate: convertedStartDate,
-						endDate: convertedEndDate,
-						//...doc.data(),
-					};
+		if (currentUser) {
+			db.collection("users")
+				.doc(currentUser.uid)
+				.collection("tasks")
+				.onSnapshot((snapshot) => {
+					const taskArr = snapshot.docs.map((doc) => {
+						const convertedStartDate =
+							doc.data().startDate !== "" ? doc.data().startDate.toDate() : "";
+						const convertedEndDate =
+							doc.data().endDate !== "" ? doc.data().endDate.toDate() : "";
+						return {
+							id: doc.id,
+							category: doc.data().category,
+							completed: doc.data().completed,
+							desc: doc.data().desc,
+							startDate: convertedStartDate,
+							endDate: convertedEndDate,
+							//...doc.data(),
+						};
+					});
+					setTasks(taskArr);
 				});
-				setTasks(taskArr);
-			});
-	}, []);
+		}
+	}, [currentUser]);
 
 	useEffect(() => {
 		window.addEventListener("resize", handleResize);

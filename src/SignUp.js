@@ -35,8 +35,6 @@ export default function Signup() {
 			setError("");
 			setLoading(true);
 			await signup(emailRef.current.value, passwordRef.current.value);
-			// create user using uid in firestore
-
 			navigate("/");
 		} catch {
 			setError("Failed to create an account");
