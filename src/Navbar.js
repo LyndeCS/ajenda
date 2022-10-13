@@ -30,7 +30,7 @@ export default function Navbar() {
 	return (
 		<ThemeProvider theme={theme}>
 			<Box>
-				<AppBar elevation={0} position="static">
+				<AppBar elevation={2} position="static">
 					<Toolbar>
 						<IconButton
 							size="large"
@@ -41,7 +41,11 @@ export default function Navbar() {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+						<Typography
+							variant="h6"
+							component="div"
+							sx={{ flexGrow: 1, fontFamily: "Quicksand", fontSize: 20 }}
+						>
 							Ajenda
 						</Typography>
 						<Button

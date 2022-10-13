@@ -111,6 +111,7 @@ const CustomNavigationButton = ({ children, style, ...restProps }) => (
 		style={{
 			...style,
 			color: "black",
+			fontFamily: "Quicksand",
 		}}
 	>
 		{children}
@@ -124,6 +125,7 @@ const CustomNavigatorOpenButton = ({ children, style, ...restProps }) => (
 			...style,
 			color: "black",
 			fontSize: 16,
+			fontFamily: "Quicksand",
 		}}
 	>
 		{children}

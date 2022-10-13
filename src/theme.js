@@ -15,7 +15,8 @@ const theme = createTheme({
 	typography: {
 		button: {
 			textTransform: "none",
-			fontWeight: 500,
+			fontWeight: 700,
+			fontSize: 16,
 			fontFamily: "Quicksand",
 		},
 	},

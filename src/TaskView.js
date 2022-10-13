@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TaskGroup from "./TaskGroup";
-import { Divider, Button, ThemeProvider } from "@mui/material";
+import { Divider, Button, ThemeProvider, Box } from "@mui/material";
 import "./css/TaskView.css";
 import theme from "./theme";
 import { nanoid } from "nanoid";
@@ -94,15 +94,17 @@ function TaskView(props) {
 				{headerTaskGroups}
 
 				<ThemeProvider theme={theme}>
-					<Button
-						className="add-task-button"
-						variant="contained"
-						color="primary"
-						onClick={createTask}
-						disableElevation
-					>
-						Add Task
-					</Button>
+					<Box textAlign="center">
+						<Button
+							className="add-task-button"
+							variant="contained"
+							color="primary"
+							onClick={createTask}
+							sx={{ minWidth: 120, width: 0.3 }}
+						>
+							Add Task
+						</Button>
+					</Box>
 				</ThemeProvider>
 			</div>
 
