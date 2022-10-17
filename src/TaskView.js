@@ -100,7 +100,7 @@ function TaskView(props) {
 							variant="contained"
 							color="primary"
 							onClick={createTask}
-							sx={{ minWidth: 120, width: 0.3 }}
+							sx={{ minWidth: 120, width: 0.3, height: 32 }}
 						>
 							Add Task
 						</Button>

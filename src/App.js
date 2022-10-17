@@ -21,6 +21,8 @@ function App() {
 	);
 	const { currentUser } = useAuth();
 
+	const [nextPosition, setNextPosition] = useState(0);
+
 	const handleResize = () => {
 		if (window.innerWidth < 768) {
 			if (!isMobile) {
@@ -42,6 +44,7 @@ function App() {
 			category: "unscheduled",
 			startDate: "",
 			endDate: "",
+			position: nextPosition,
 		};
 
 		db.collection("users")
@@ -68,7 +71,29 @@ function App() {
 	function changeAppointment(appointment) {
 		const idArr = Object.keys(appointment);
 		const id = idArr[0];
-		const changes = appointment[id];
+		let changes = appointment[id].title
+			? { desc: appointment[id].title, ...appointment[id] }
+			: appointment[id];
+
+		// Fixes for inaccurate times returned by scheduler
+		// Sometimes date is returned as one second before the minute (0:59 seconds)
+		// Rounds up, then removes seconds/milliseconds
+		if (changes.startDate) {
+			let sd = new Date(changes.startDate);
+			if (sd.getSeconds() > 55) {
+				sd.setMinutes(sd.getMinutes() + 1);
+			}
+			sd.setSeconds(0, 0);
+			changes.startDate = sd;
+		}
+		if (changes.endDate) {
+			let ed = new Date(changes.endDate);
+			if (ed.getSeconds() > 55) {
+				ed.setMinutes(ed.getMinutes() + 1);
+			}
+			ed.setSeconds(0, 0);
+			changes.endDate = ed;
+		}
 
 		db.collection("users")
 			.doc(currentUser.uid)
@@ -111,13 +136,22 @@ function App() {
 	}
 
 	function completeTask(id) {
-		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
-			{
-				completed: true,
-				category: "completed",
-			},
-			{ merge: true }
-		);
+		const currTask = tasks.find((task) => task.id === id);
+		const pos = currTask.position;
+
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.doc(id)
+			.set(
+				{
+					completed: true,
+					category: "completed",
+					position: 0,
+				},
+				{ merge: true }
+			)
+			.then(adjustTaskPositions(pos));
 	}
 
 	function uncompleteTask(id) {
@@ -127,17 +161,16 @@ function App() {
 			.doc(currentUser.uid)
 			.collection("tasks")
 			.doc(id)
-			.set(
-				{
-					completed: false,
-					category: currTask.startDate === "" ? "unscheduled" : "scheduled",
-				},
-				{ merge: true }
-			);
+			.update({
+				completed: false,
+				category: currTask.startDate === "" ? "unscheduled" : "scheduled",
+				position: nextPosition,
+			});
 	}
 
 	function deleteTask(id) {
 		const taskToDelete = tasks.find((task) => task.id === id);
+		const pos = taskToDelete.position;
 
 		// prompt to confirm delete if task has description
 		if (taskToDelete.desc) {
@@ -158,6 +191,8 @@ function App() {
 				.doc(id)
 				.delete();
 		}
+
+		adjustTaskPositions(pos);
 	}
 
 	function countTasks(category) {
@@ -166,10 +201,51 @@ function App() {
 	}
 
 	function handleDnd(dndTaskArray) {
-		const nonScheduledTasks = tasks.filter(
-			(task) => task.category !== "unscheduled"
-		);
-		setTasks([...nonScheduledTasks, ...dndTaskArray]);
+		// update firestore positions
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					const currTask = dndTaskArray.find((task) => task.id === doc.id);
+					if (currTask && currTask.position !== doc.data().position) {
+						db.collection("users")
+							.doc(currentUser.uid)
+							.collection("tasks")
+							.doc(doc.id)
+							.update({
+								position: currTask.position,
+							})
+							.catch((error) => {
+								console.error("Error updating document: ", error);
+							});
+					}
+				});
+			});
+	}
+
+	function adjustTaskPositions(pos) {
+		db.collection("users")
+			.doc(currentUser.uid)
+			.collection("tasks")
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					if (doc.data().position > pos) {
+						db.collection("users")
+							.doc(currentUser.uid)
+							.collection("tasks")
+							.doc(doc.id)
+							.update({
+								position: doc.data().position - 1,
+							})
+							.catch((error) => {
+								console.error("Error updating document: ", error);
+							});
+					}
+				});
+			});
 	}
 
 	const handleTaskButton = () => {
@@ -216,10 +292,14 @@ function App() {
 							desc: doc.data().desc,
 							startDate: convertedStartDate,
 							endDate: convertedEndDate,
+							position: doc.data().position,
 							//...doc.data(),
 						};
 					});
 					setTasks(taskArr);
+					setNextPosition(
+						taskArr.filter((task) => task.category === "unscheduled").length + 1
+					);
 				});
 		}
 	}, [currentUser]);
@@ -247,6 +327,13 @@ function App() {
 	// 	}, 60 * 1000);
 	// 	return () => clearInterval(interval);
 	// }, [tasks]);
+
+	// Hide URL bar on mobile
+	useEffect(() => {
+		if (isMobile) {
+			window.scrollTo(0, 1);
+		}
+	}, []);
 
 	return (
 		<Router>

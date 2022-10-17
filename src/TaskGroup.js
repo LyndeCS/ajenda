@@ -4,6 +4,7 @@ import "./css/TaskGroup.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { range, orderBy } from "lodash";
 
 function TaskGroup(props) {
 	//fixme: setCollapsed is never used
@@ -13,12 +14,44 @@ function TaskGroup(props) {
 	);
 
 	function handleOnDragEnd(result) {
-		if (!result.destination) return;
-		const items = Array.from(dndTaskList);
-		const [reorderedItem] = items.splice(result.source.index, 1);
-		items.splice(result.destination.index, 0, reorderedItem);
-		setDndTaskList(items);
-		props.handleDnd(items);
+		const { destination, source } = result;
+
+		if (!destination) return;
+		if (
+			destination.droppableId === source.droppableId &&
+			destination.index === source.index
+		) {
+			return;
+		}
+
+		const directionOfDrag =
+			destination.index > source.index ? "GREATER" : "LESS";
+
+		let affectedRange = [];
+		if (directionOfDrag === "GREATER") {
+			affectedRange = range(source.index, destination.index + 1);
+		} else if (directionOfDrag === "LESS") {
+			affectedRange = range(destination.index, source.index);
+		}
+
+		const reOrderedTasklist = dndTaskList.map((task) => {
+			if (task.id === result.draggableId) {
+				task.position = result.destination.index;
+				return task;
+			} else if (affectedRange.includes(task.position)) {
+				if (directionOfDrag === "GREATER") {
+					task.position = task.position - 1;
+					return task;
+				} else if (directionOfDrag === "LESS") {
+					task.position = task.position + 1;
+					return task;
+				}
+			} else {
+				return task;
+			}
+		});
+		setDndTaskList(reOrderedTasklist);
+		props.handleDnd(reOrderedTasklist);
 	}
 
 	const tasks = props.tasks
@@ -41,7 +74,7 @@ function TaskGroup(props) {
 			/>
 		));
 
-	const dndTasks = dndTaskList.map((task, index) => (
+	const dndTasks = orderBy(dndTaskList, "position").map((task) => (
 		<Task
 			id={task.id}
 			key={task.id}
@@ -55,7 +88,7 @@ function TaskGroup(props) {
 			startDate={task.startDate}
 			endDate={task.endDate}
 			category={task.category}
-			index={index}
+			index={task.position}
 		/>
 	));
 
