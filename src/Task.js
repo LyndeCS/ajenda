@@ -177,6 +177,7 @@ function Task(props) {
 					autoFocus
 					onBlur={handleBlur}
 					color="grey"
+					autoComplete="off"
 				/>
 			</form>
 			{/* <div className="task-button-container">
