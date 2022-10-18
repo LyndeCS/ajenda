@@ -2,13 +2,21 @@
     display: none;
 }
 
+.fab-cradle {
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    height: 36px;
+    width: 76px;
+    background-color: white;
+    border-radius: 0 0 80px 80px;
+}
+
 @media only screen and (max-width: 768px){
     .mobile-footer {
         display: block;
-    }
-
-    .mobile-footer-upper {
-        display: flex;
-        justify-content: space-around;
     }
 }

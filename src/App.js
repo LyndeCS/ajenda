@@ -328,14 +328,6 @@ function App() {
 	// 	return () => clearInterval(interval);
 	// }, [tasks]);
 
-	// Hide URL bar on mobile
-	useEffect(() => {
-		if (isMobile) {
-			console.log("IS MOBILE");
-			window.scrollTo(0, 1);
-		}
-	}, []);
-
 	return (
 		<Router>
 			<Routes>
