@@ -353,6 +353,7 @@ function App() {
 											countTasks={countTasks}
 											scheduleTask={scheduleTask}
 											handleDnd={handleDnd}
+											isMobile={isMobile}
 										/>
 									)}
 									{scheduleViewActive && (

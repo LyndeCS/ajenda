@@ -4,6 +4,7 @@ import { Divider, Button, ThemeProvider, Box } from "@mui/material";
 import "./css/TaskView.css";
 import theme from "./theme";
 import { nanoid } from "nanoid";
+import Toolbar from "@mui/material/Toolbar";
 
 const GROUPS_DEFAULT = [
 	{ name: "past", collapsed: false, section: "header" },
@@ -85,6 +86,7 @@ function TaskView(props) {
 
 	return (
 		<div className="task-container">
+			{props.isMobile && <Toolbar />}
 			<div className="task-header">
 				<h1>Tasks</h1>
 			</div>

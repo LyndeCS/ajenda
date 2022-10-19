@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -62,53 +61,59 @@ export default function Navbar(props) {
 				: document.getElementsByClassName("MainLayout-container")[0];
 
 			setScrollTarget(target);
+		} else {
+			setScrollTarget(undefined);
 		}
-	}, []);
+	}, [props.isMobile, props.taskViewActive, props.scheduleViewActive]);
 
-	return (
-		<ThemeProvider theme={theme}>
-			<HideOnScroll>
-				<AppBar elevation={2} position="fixed">
-					<Toolbar>
-						<div>
-							<IconButton
-								size="large"
-								edge="start"
-								color="inherit"
-								aria-label="menu"
-								sx={{ mr: 2 }}
-								onClick={handleMenu}
+	if (props.isMobile && props.scheduleViewActive) {
+		return <></>;
+	} else {
+		return (
+			<ThemeProvider theme={theme}>
+				<HideOnScroll>
+					<AppBar elevation={2} position={props.isMobile ? "fixed" : "sticky"}>
+						<Toolbar>
+							<div>
+								<IconButton
+									size="large"
+									edge="start"
+									color="inherit"
+									aria-label="menu"
+									sx={{ mr: 2 }}
+									onClick={handleMenu}
+								>
+									<MenuIcon />
+								</IconButton>
+								<Menu
+									id="menu-appbar"
+									anchorEl={anchorEl}
+									anchorOrigin={{
+										vertical: "bottom",
+										horizontal: "left",
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: "bottom",
+										horizontal: "left",
+									}}
+									open={Boolean(anchorEl)}
+									onClose={handleClose}
+								>
+									<MenuItem onClick={handleLogout}>Log Out</MenuItem>
+								</Menu>
+							</div>
+							<Typography
+								variant="h6"
+								component="div"
+								sx={{ flexGrow: 1, fontFamily: "Quicksand", fontSize: 20 }}
 							>
-								<MenuIcon />
-							</IconButton>
-							<Menu
-								id="menu-appbar"
-								anchorEl={anchorEl}
-								anchorOrigin={{
-									vertical: "bottom",
-									horizontal: "left",
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: "bottom",
-									horizontal: "left",
-								}}
-								open={Boolean(anchorEl)}
-								onClose={handleClose}
-							>
-								<MenuItem onClick={handleLogout}>Log Out</MenuItem>
-							</Menu>
-						</div>
-						<Typography
-							variant="h6"
-							component="div"
-							sx={{ flexGrow: 1, fontFamily: "Quicksand", fontSize: 20 }}
-						>
-							Ajenda
-						</Typography>
-					</Toolbar>
-				</AppBar>
-			</HideOnScroll>
-		</ThemeProvider>
-	);
+								Ajenda
+							</Typography>
+						</Toolbar>
+					</AppBar>
+				</HideOnScroll>
+			</ThemeProvider>
+		);
+	}
 }
