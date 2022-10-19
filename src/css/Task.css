@@ -4,14 +4,16 @@
 	display: flex;
 	background-color: white;
 	word-wrap: break-word;
-	margin: auto;
-	padding-left: 0.4em;
+	/* margin: auto;
+	padding-left: 0.4em; */
 }
 
 .task-desc {
 	margin: auto;
 	margin-left: 0;
-	font-size: 16px;
+	margin-bottom: 9.5px;
+	margin-left: 4px;
+	font-size: 18px;
 }
 
 .completed-true {
@@ -76,3 +78,9 @@
 /* .schedule-modal-button {
 	align-self: center;
 } */
+
+@media only screen and (max-width: 768px) {
+	.task {
+		width: 85%;
+	}
+}

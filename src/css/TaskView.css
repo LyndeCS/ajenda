@@ -56,10 +56,12 @@ ul {
 
 	.task-body {
 		flex: 0;
+		/* width: 90%; */
 	}
 
 	.task-footer {
 		flex: 1;
+		/* width: 90%; */
 	}
 
 	.add-task-button{

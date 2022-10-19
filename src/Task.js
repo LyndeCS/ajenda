@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import CheckBoxOutlineBlankRoundedIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
+import CheckBoxRoundedIcon from "@mui/icons-material/CheckBoxRounded";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -152,10 +154,15 @@ function Task(props) {
 		<li className="task">
 			<form className="task-edit-form" onSubmit={handleSubmit}>
 				<Checkbox
+					icon={<CheckBoxOutlineBlankRoundedIcon />}
+					checkedIcon={<CheckBoxRoundedIcon />}
 					sx={{
 						color: "#00BE91",
 						"&.Mui-checked": {
 							color: "#00BE91",
+						},
+						"& .MuiSvgIcon-root": {
+							fontSize: 20,
 						},
 					}}
 					checked={props.completed ? true : false}
@@ -180,32 +187,21 @@ function Task(props) {
 					autoComplete="off"
 				/>
 			</form>
-			{/* <div className="task-button-container">
-				<IconButton
-					aria-label="schedule"
-					className="schedule-button"
-					onClick={() => handleSchedule(props.id)}
-				>
-					<ScheduleIcon className="schedule-icon" />
-				</IconButton>
-				<IconButton
-					aria-label="delete"
-					className="delete-button"
-					onClick={() => props.deleteTask(props.id)}
-				>
-					<DeleteIcon className="delete-icon" />
-				</IconButton>
-			</div> */}
 		</li>
 	);
 
 	const viewTemplate = (
 		<li className="task" onClick={handleClick}>
 			<Checkbox
+				icon={<CheckBoxOutlineBlankRoundedIcon />}
+				checkedIcon={<CheckBoxRoundedIcon />}
 				sx={{
 					color: "#00BE91",
 					"&.Mui-checked": {
 						color: "#00BE91",
+					},
+					"& .MuiSvgIcon-root": {
+						fontSize: 20,
 					},
 				}}
 				checked={props.completed ? true : false}
@@ -310,10 +306,15 @@ function Task(props) {
 					onClick={handleClick}
 				>
 					<Checkbox
+						icon={<CheckBoxOutlineBlankRoundedIcon />}
+						checkedIcon={<CheckBoxRoundedIcon />}
 						sx={{
 							color: "#00BE91",
 							"&.Mui-checked": {
 								color: "#00BE91",
+							},
+							"& .MuiSvgIcon-root": {
+								fontSize: 20,
 							},
 						}}
 						checked={props.completed ? true : false}
