@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TaskView from "./TaskView";
 import ScheduleView from "./ScheduleView";
 import MobileFooter from "./MobileFooter";
@@ -336,7 +336,11 @@ function App() {
 					element={
 						<PrivateRoute>
 							<div className="App">
-								<Navbar />
+								<Navbar
+									isMobile={isMobile}
+									taskViewActive={taskViewActive}
+									scheduleViewActive={scheduleViewActive}
+								/>
 								<div className="view-container">
 									{taskViewActive && (
 										<TaskView

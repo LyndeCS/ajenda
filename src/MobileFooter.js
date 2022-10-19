@@ -65,13 +65,13 @@ function MobileFooter(props) {
 
 	return (
 		<AppBar
-			position="fixed"
+			position="sticky"
 			sx={{
 				top: "auto",
 				bottom: 0,
 				backgroundColor: "#00BE91",
-				paddingLeft: 5,
-				paddingRight: 5,
+				paddingLeft: 4,
+				paddingRight: 4,
 			}}
 		>
 			<Toolbar>
