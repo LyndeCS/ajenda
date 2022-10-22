@@ -9,6 +9,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
+import { isMobile, isDesktop } from "react-device-detect";
 
 const taskViewButtonStyle = {
 	color: "white",
@@ -72,6 +73,7 @@ function MobileFooter(props) {
 				backgroundColor: "#00BE91",
 				paddingLeft: 4,
 				paddingRight: 4,
+				display: isMobile && props.isKeyboardOpen ? "none" : "flex",
 			}}
 		>
 			<Toolbar>

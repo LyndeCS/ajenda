@@ -80,7 +80,7 @@ export default function Navbar(props) {
 									edge="start"
 									color="inherit"
 									aria-label="menu"
-									sx={{ mr: 2 }}
+									sx={{ mr: 1 }}
 									onClick={handleMenu}
 								>
 									<MenuIcon />

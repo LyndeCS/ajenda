@@ -22,16 +22,18 @@ import Timeframe from "./Timeframe";
 import { Draggable } from "react-beautiful-dnd";
 
 //fixme: refactor
+// schedule modal
 const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: 400,
+	width: 0.7,
+	maxWidth: 400,
 	bgcolor: "background.paper",
 	border: "2px solid #000",
 	boxShadow: 24,
-	p: 4,
+	p: 2,
 	display: "flex",
 	flexDirection: "column",
 };

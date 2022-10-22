@@ -34,16 +34,21 @@ function TaskGroup(props) {
 			affectedRange = range(destination.index, source.index);
 		}
 
+		let updatedTasks = [];
+
 		const reOrderedTasklist = dndTaskList.map((task) => {
 			if (task.id === result.draggableId) {
 				task.position = result.destination.index;
+				updatedTasks.push(task);
 				return task;
 			} else if (affectedRange.includes(task.position)) {
 				if (directionOfDrag === "GREATER") {
 					task.position = task.position - 1;
+					updatedTasks.push(task);
 					return task;
 				} else if (directionOfDrag === "LESS") {
 					task.position = task.position + 1;
+					updatedTasks.push(task);
 					return task;
 				}
 			} else {
@@ -51,7 +56,7 @@ function TaskGroup(props) {
 			}
 		});
 		setDndTaskList(reOrderedTasklist);
-		props.handleDnd(reOrderedTasklist);
+		props.handleDnd(reOrderedTasklist, updatedTasks);
 	}
 
 	const tasks = props.tasks

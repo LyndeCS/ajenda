@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import TaskView from "./TaskView";
 import ScheduleView from "./ScheduleView";
 import MobileFooter from "./MobileFooter";
@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { db } from "./firebase";
 import "./css/App.css";
+import useDetectKeyboardOpen from "use-detect-keyboard-open";
 
 function App() {
 	const [tasks, setTasks] = useState([]);
@@ -180,6 +181,7 @@ function App() {
 					.collection("tasks")
 					.doc(id)
 					.delete();
+				adjustTaskPositions(pos);
 			}
 		}
 
@@ -190,9 +192,8 @@ function App() {
 				.collection("tasks")
 				.doc(id)
 				.delete();
+			adjustTaskPositions(pos);
 		}
-
-		adjustTaskPositions(pos);
 	}
 
 	function countTasks(category) {
@@ -200,52 +201,73 @@ function App() {
 		return count;
 	}
 
-	function handleDnd(dndTaskArray) {
+	function handleDnd(dndTaskArray, updatedTasks) {
 		// update firestore positions
-		db.collection("users")
-			.doc(currentUser.uid)
-			.collection("tasks")
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					const currTask = dndTaskArray.find((task) => task.id === doc.id);
-					if (currTask && currTask.position !== doc.data().position) {
-						db.collection("users")
-							.doc(currentUser.uid)
-							.collection("tasks")
-							.doc(doc.id)
-							.update({
-								position: currTask.position,
-							})
-							.catch((error) => {
-								console.error("Error updating document: ", error);
-							});
-					}
-				});
+		// db.collection("users")
+		// 	.doc(currentUser.uid)
+		// 	.collection("tasks")
+		// 	.get()
+		// 	.then((querySnapshot) => {
+		// 		querySnapshot.forEach((doc) => {
+		// 			const currTask = dndTaskArray.find((task) => task.id === doc.id);
+		// 			if (currTask && currTask.position !== doc.data().position) {
+		// 				db.collection("users")
+		// 					.doc(currentUser.uid)
+		// 					.collection("tasks")
+		// 					.doc(doc.id)
+		// 					.update({
+		// 						position: currTask.position,
+		// 					})
+		// 					.catch((error) => {
+		// 						console.error("Error updating document: ", error);
+		// 					});
+		// 			}
+		// 		});
+		// 	});
+
+		let batch = db.batch();
+		updatedTasks.forEach((task) => {
+			const docRef = db
+				.collection("users")
+				.doc(currentUser.uid)
+				.collection("tasks")
+				.doc(task.id);
+			batch.update(docRef, { position: task.position });
+		});
+
+		batch
+			.commit()
+			.then(() => {
+				console.log("Batch Commited.");
+			})
+			.catch(() => {
+				console.log("Batch Error.");
 			});
 	}
 
 	function adjustTaskPositions(pos) {
-		db.collection("users")
-			.doc(currentUser.uid)
-			.collection("tasks")
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					if (doc.data().position > pos) {
-						db.collection("users")
-							.doc(currentUser.uid)
-							.collection("tasks")
-							.doc(doc.id)
-							.update({
-								position: doc.data().position - 1,
-							})
-							.catch((error) => {
-								console.error("Error updating document: ", error);
-							});
-					}
+		if (pos > 0) {
+			db.collection("users")
+				.doc(currentUser.uid)
+				.collection("tasks")
+				.get()
+				.then((querySnapshot) => {
+					querySnapshot.forEach((doc) => {
+						if (doc.data().position > pos) {
+							db.collection("users")
+								.doc(currentUser.uid)
+								.collection("tasks")
+								.doc(doc.id)
+								.update({
+									position: doc.data().position - 1,
+								})
+								.catch((error) => {
+									console.error("Error updating document: ", error);
+								});
+						}
+					});
 				});
-			});
+		}
 	}
 
 	const handleTaskButton = () => {
@@ -258,25 +280,11 @@ function App() {
 		setScheduleViewActive(true);
 	};
 
-	// Check task completion and endDate to determine if past due
-	function pastDue(task) {
-		// if task is completed, it is not past due
-		if (task.completed) {
-			return false;
-		}
-
-		const endDate = new Date(task.endDate);
-		const currentDate = new Date(Date.now());
-		if (endDate < currentDate) {
-			return true;
-		}
-		return false;
-	}
-
 	// A change to a task will cause a new snapshot and update the [tasks] state
 	useEffect(() => {
 		if (currentUser) {
-			db.collection("users")
+			const unsubscribe = db
+				.collection("users")
 				.doc(currentUser.uid)
 				.collection("tasks")
 				.onSnapshot((snapshot) => {
@@ -296,11 +304,17 @@ function App() {
 							//...doc.data(),
 						};
 					});
+					console.log("setTasks(taskArr)");
 					setTasks(taskArr);
-					setNextPosition(
-						taskArr.filter((task) => task.category === "unscheduled").length + 1
-					);
+					// setNextPosition(
+					// 	taskArr.filter((task) => task.category === "unscheduled").length + 1
+					// );
+					const nextPos = Math.max(...taskArr.map((task) => task.position)) + 1;
+					setNextPosition(nextPos);
 				});
+			return () => {
+				unsubscribe();
+			};
 		}
 	}, [currentUser]);
 
@@ -308,6 +322,21 @@ function App() {
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, [isMobile]);
+
+	// Check task completion and endDate to determine if past due
+	function pastDue(task) {
+		// if task is completed, it is not past due
+		if (task.completed) {
+			return false;
+		}
+
+		const endDate = new Date(task.endDate);
+		const currentDate = new Date(Date.now());
+		if (endDate < currentDate) {
+			return true;
+		}
+		return false;
+	}
 
 	// check for past due tasks every minute
 	// useEffect(() => {
@@ -327,6 +356,8 @@ function App() {
 	// 	}, 60 * 1000);
 	// 	return () => clearInterval(interval);
 	// }, [tasks]);
+
+	const isKeyboardOpen = useDetectKeyboardOpen();
 
 	return (
 		<Router>
@@ -381,6 +412,7 @@ function App() {
 										scheduleViewButton={handleScheduleButton}
 										taskViewActive={taskViewActive}
 										scheduleViewActive={scheduleViewActive}
+										isKeyboardOpen={isKeyboardOpen}
 									/>
 								)}
 							</div>
