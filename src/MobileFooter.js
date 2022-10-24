@@ -10,6 +10,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import { isMobile, isDesktop } from "react-device-detect";
+import useDetectKeyboardOpen from "use-detect-keyboard-open";
 
 const taskViewButtonStyle = {
 	color: "white",
@@ -64,6 +65,8 @@ function MobileFooter(props) {
 		props.scheduleViewButton();
 	};
 
+	const isKeyboardOpen = useDetectKeyboardOpen();
+
 	return (
 		<AppBar
 			position="sticky"
@@ -73,7 +76,7 @@ function MobileFooter(props) {
 				backgroundColor: "#00BE91",
 				paddingLeft: 4,
 				paddingRight: 4,
-				display: isMobile && props.isKeyboardOpen ? "none" : "flex",
+				display: isMobile && isKeyboardOpen ? "none" : "flex",
 			}}
 		>
 			<Toolbar>

@@ -11,7 +11,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { db } from "./firebase";
 import "./css/App.css";
-import useDetectKeyboardOpen from "use-detect-keyboard-open";
 
 function App() {
 	const [tasks, setTasks] = useState([]);
@@ -201,30 +200,7 @@ function App() {
 		return count;
 	}
 
-	function handleDnd(dndTaskArray, updatedTasks) {
-		// update firestore positions
-		// db.collection("users")
-		// 	.doc(currentUser.uid)
-		// 	.collection("tasks")
-		// 	.get()
-		// 	.then((querySnapshot) => {
-		// 		querySnapshot.forEach((doc) => {
-		// 			const currTask = dndTaskArray.find((task) => task.id === doc.id);
-		// 			if (currTask && currTask.position !== doc.data().position) {
-		// 				db.collection("users")
-		// 					.doc(currentUser.uid)
-		// 					.collection("tasks")
-		// 					.doc(doc.id)
-		// 					.update({
-		// 						position: currTask.position,
-		// 					})
-		// 					.catch((error) => {
-		// 						console.error("Error updating document: ", error);
-		// 					});
-		// 			}
-		// 		});
-		// 	});
-
+	function handleDnd(updatedTasks) {
 		let batch = db.batch();
 		updatedTasks.forEach((task) => {
 			const docRef = db
@@ -238,10 +214,10 @@ function App() {
 		batch
 			.commit()
 			.then(() => {
-				console.log("Batch Commited.");
+				//console.log("Batch Commited.");
 			})
 			.catch(() => {
-				console.log("Batch Error.");
+				console.log("DND Batch Error.");
 			});
 	}
 
@@ -306,9 +282,6 @@ function App() {
 					});
 					console.log("setTasks(taskArr)");
 					setTasks(taskArr);
-					// setNextPosition(
-					// 	taskArr.filter((task) => task.category === "unscheduled").length + 1
-					// );
 					const nextPos = Math.max(...taskArr.map((task) => task.position)) + 1;
 					setNextPosition(nextPos);
 				});
@@ -356,8 +329,6 @@ function App() {
 	// 	}, 60 * 1000);
 	// 	return () => clearInterval(interval);
 	// }, [tasks]);
-
-	const isKeyboardOpen = useDetectKeyboardOpen();
 
 	return (
 		<Router>
@@ -412,7 +383,6 @@ function App() {
 										scheduleViewButton={handleScheduleButton}
 										taskViewActive={taskViewActive}
 										scheduleViewActive={scheduleViewActive}
-										isKeyboardOpen={isKeyboardOpen}
 									/>
 								)}
 							</div>

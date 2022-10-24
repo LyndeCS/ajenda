@@ -56,7 +56,7 @@ function TaskGroup(props) {
 			}
 		});
 		setDndTaskList(reOrderedTasklist);
-		props.handleDnd(reOrderedTasklist, updatedTasks);
+		props.handleDnd(updatedTasks);
 	}
 
 	const tasks = props.tasks
