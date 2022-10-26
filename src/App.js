@@ -55,7 +55,6 @@ function App() {
 	}
 
 	function addAppointment(appointment) {
-		console.log(appointment);
 		const newTask = {
 			desc: appointment.title ? appointment.title : "new appointment",
 			completed: false,
@@ -306,7 +305,6 @@ function App() {
 							//...doc.data(),
 						};
 					});
-					console.log("setTasks(taskArr)");
 					setTasks(taskArr);
 					const nextPos =
 						Math.max(

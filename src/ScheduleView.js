@@ -162,7 +162,6 @@ const DayScaleRow = (props) => {
 
 function ScheduleView(props) {
 	function commitChanges({ added, changed, deleted }) {
-		console.log(props);
 		if (added) {
 			props.addAppointment(added);
 		}
