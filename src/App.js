@@ -55,6 +55,23 @@ function App() {
 	}
 
 	function addAppointment(appointment) {
+		if (appointment.startDate) {
+			let sd = new Date(appointment.startDate);
+			if (sd.getSeconds() > 55) {
+				sd.setMinutes(sd.getMinutes() + 1);
+			}
+			sd.setSeconds(0, 0);
+			appointment.startDate = sd;
+		}
+		if (appointment.endDate) {
+			let ed = new Date(appointment.endDate);
+			if (ed.getSeconds() > 55) {
+				ed.setMinutes(ed.getMinutes() + 1);
+			}
+			ed.setSeconds(0, 0);
+			appointment.endDate = ed;
+		}
+
 		const newTask = {
 			desc: appointment.title ? appointment.title : "new appointment",
 			completed: false,
