@@ -21,7 +21,7 @@ function App() {
 	);
 	const { currentUser } = useAuth();
 
-	const [nextPosition, setNextPosition] = useState(0);
+	const [nextPosition, setNextPosition] = useState(1);
 
 	const handleResize = () => {
 		if (window.innerWidth < 768) {
@@ -323,12 +323,16 @@ function App() {
 						};
 					});
 					setTasks(taskArr);
-					const nextPos =
-						Math.max(
-							...taskArr.map((task) => {
-								return task.position ? task.position : 0;
-							})
-						) + 1;
+
+					let nextPos = 1;
+					if (taskArr.length > 0) {
+						nextPos =
+							Math.max(
+								...taskArr.map((task) => {
+									return task.position ? task.position : 0;
+								})
+							) + 1;
+					}
 					setNextPosition(nextPos);
 				});
 			return () => {
@@ -378,7 +382,7 @@ function App() {
 						});
 				});
 			}
-		}, 60 * 1000);
+		}, 5 * 1000);
 		return () => {
 			clearInterval(interval);
 		};
