@@ -20,6 +20,7 @@ import {
 	CurrentTimeIndicator,
 	DragDropProvider,
 	EditRecurrenceMenu,
+	Resources,
 	AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import "./css/ScheduleView.css";
@@ -73,7 +74,6 @@ const Appointment = ({ children, style, ...restProps }) => (
 		{...restProps}
 		style={{
 			...style,
-			backgroundColor: "#00BE91",
 			fontSize: 14,
 			fontFamily: "Quicksand",
 		}}
@@ -162,6 +162,7 @@ const DayScaleRow = (props) => {
 
 function ScheduleView(props) {
 	function commitChanges({ added, changed, deleted }) {
+		console.log(props);
 		if (added) {
 			props.addAppointment(added);
 		}
@@ -179,6 +180,47 @@ function ScheduleView(props) {
 			<div className={classNames(classes.nowIndicator, classes.line)} />
 		</StyledDiv>
 	);
+
+	const colors = [
+		{
+			text: "Mint",
+			id: 1,
+			color: "#00BE91",
+		},
+		{
+			text: "Copper",
+			id: 2,
+			color: "#E58F65",
+		},
+		{
+			text: "Red",
+			id: 3,
+			color: "#D05353",
+		},
+		{
+			text: "Lilac",
+			id: 4,
+			color: "#797596",
+		},
+		{
+			text: "Blue",
+			id: 5,
+			color: "#284C69",
+		},
+		{
+			text: "Default",
+			id: "",
+			color: "#00BE91",
+		},
+	];
+
+	const resources = [
+		{
+			fieldName: "colorId",
+			title: "Colors",
+			instances: colors,
+		},
+	];
 
 	return (
 		<div className="schedule-container">
@@ -204,7 +246,8 @@ function ScheduleView(props) {
 				<TodayButton buttonComponent={CustomTodayButton} />
 				<ViewSwitcher />
 				<Appointments appointmentComponent={Appointment} />
-				<AppointmentTooltip showOpenButton showDeleteButton />
+				<Resources data={resources} />
+				<AppointmentTooltip showCloseButton showOpenButton showDeleteButton />
 				<AppointmentForm />
 				<AllDayPanel />
 				<DragDropProvider />

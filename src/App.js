@@ -45,6 +45,7 @@ function App() {
 			startDate: "",
 			endDate: "",
 			position: nextPosition,
+			colorId: 1,
 		};
 
 		db.collection("users")
@@ -54,12 +55,15 @@ function App() {
 	}
 
 	function addAppointment(appointment) {
+		console.log(appointment);
 		const newTask = {
-			desc: appointment.title,
+			desc: appointment.title ? appointment.title : "new appointment",
 			completed: false,
 			category: "scheduled",
 			startDate: appointment.startDate,
 			endDate: appointment.endDate,
+			position: 0,
+			colorId: appointment.colorId ? appointment.colorId : 1,
 		};
 
 		db.collection("users")
@@ -125,33 +129,34 @@ function App() {
 	}
 
 	function scheduleTask(id, scheduledStart, scheduledEnd) {
+		const currTask = tasks.find((task) => task.id === id);
+		const pos = currTask.position;
+
 		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
 			{
 				startDate: scheduledStart,
 				endDate: scheduledEnd,
 				category: "scheduled",
+				position: 0,
 			},
 			{ merge: true }
 		);
+		adjustTaskPositions(pos);
 	}
 
 	function completeTask(id) {
 		const currTask = tasks.find((task) => task.id === id);
 		const pos = currTask.position;
 
-		db.collection("users")
-			.doc(currentUser.uid)
-			.collection("tasks")
-			.doc(id)
-			.set(
-				{
-					completed: true,
-					category: "completed",
-					position: 0,
-				},
-				{ merge: true }
-			)
-			.then(adjustTaskPositions(pos));
+		db.collection("users").doc(currentUser.uid).collection("tasks").doc(id).set(
+			{
+				completed: true,
+				category: "completed",
+				position: 0,
+			},
+			{ merge: true }
+		);
+		adjustTaskPositions(pos);
 	}
 
 	function uncompleteTask(id) {
@@ -223,25 +228,45 @@ function App() {
 
 	function adjustTaskPositions(pos) {
 		if (pos > 0) {
-			db.collection("users")
-				.doc(currentUser.uid)
-				.collection("tasks")
-				.get()
-				.then((querySnapshot) => {
-					querySnapshot.forEach((doc) => {
-						if (doc.data().position > pos) {
-							db.collection("users")
-								.doc(currentUser.uid)
-								.collection("tasks")
-								.doc(doc.id)
-								.update({
-									position: doc.data().position - 1,
-								})
-								.catch((error) => {
-									console.error("Error updating document: ", error);
-								});
-						}
-					});
+			// db.collection("users")
+			// 	.doc(currentUser.uid)
+			// 	.collection("tasks")
+			// 	.get()
+			// 	.then((querySnapshot) => {
+			// 		querySnapshot.forEach((doc) => {
+			// 			if (doc.data().position > pos) {
+			// 				db.collection("users")
+			// 					.doc(currentUser.uid)
+			// 					.collection("tasks")
+			// 					.doc(doc.id)
+			// 					.update({
+			// 						position: doc.data().position - 1,
+			// 					})
+			// 					.catch((error) => {
+			// 						console.error("Error updating document: ", error);
+			// 					});
+			// 			}
+			// 		});
+			// 	});
+
+			let batch = db.batch();
+			const tasksToUpdate = tasks.filter((task) => task.position > pos);
+			tasksToUpdate.forEach((task) => {
+				const docRef = db
+					.collection("users")
+					.doc(currentUser.uid)
+					.collection("tasks")
+					.doc(task.id);
+				batch.update(docRef, { position: task.position - 1 });
+			});
+
+			batch
+				.commit()
+				.then(() => {
+					//console.log("Batch Commited.");
+				})
+				.catch(() => {
+					console.log("adjustTaskPosition Batch Error.");
 				});
 		}
 	}
@@ -277,12 +302,18 @@ function App() {
 							startDate: convertedStartDate,
 							endDate: convertedEndDate,
 							position: doc.data().position,
+							colorId: doc.data().colorId,
 							//...doc.data(),
 						};
 					});
 					console.log("setTasks(taskArr)");
 					setTasks(taskArr);
-					const nextPos = Math.max(...taskArr.map((task) => task.position)) + 1;
+					const nextPos =
+						Math.max(
+							...taskArr.map((task) => {
+								return task.position ? task.position : 0;
+							})
+						) + 1;
 					setNextPosition(nextPos);
 				});
 			return () => {
@@ -368,6 +399,7 @@ function App() {
 														endDate: task.endDate,
 														title: task.desc,
 														id: task.id,
+														colorId: task.colorId,
 													};
 												})}
 											addAppointment={addAppointment}
