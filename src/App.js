@@ -251,16 +251,16 @@ function App() {
 			// 	.then((querySnapshot) => {
 			// 		querySnapshot.forEach((doc) => {
 			// 			if (doc.data().position > pos) {
-			// 				db.collection("users")
-			// 					.doc(currentUser.uid)
-			// 					.collection("tasks")
-			// 					.doc(doc.id)
-			// 					.update({
-			// 						position: doc.data().position - 1,
-			// 					})
-			// 					.catch((error) => {
-			// 						console.error("Error updating document: ", error);
-			// 					});
+			// db.collection("users")
+			// 	.doc(currentUser.uid)
+			// 	.collection("tasks")
+			// 	.doc(doc.id)
+			// 	.update({
+			// 		position: doc.data().position - 1,
+			// 	})
+			// 	.catch((error) => {
+			// 		console.error("Error updating document: ", error);
+			// 	});
 			// 			}
 			// 		});
 			// 	});
@@ -358,23 +358,31 @@ function App() {
 	}
 
 	// check for past due tasks every minute
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		// checks all tasks
-	// 		// some tasks may not have start/end date
-	// 		const updatedTasks = tasks.map((task) => {
-	// 			if (task.category === "scheduled" && pastDue(task)) {
-	// 				return {
-	// 					...task,
-	// 					category: "past",
-	// 				};
-	// 			}
-	// 			return task;
-	// 		});
-	// 		setTasks(updatedTasks);
-	// 	}, 60 * 1000);
-	// 	return () => clearInterval(interval);
-	// }, [tasks]);
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const pastTasks = tasks.filter(
+				(task) => task.category === "scheduled" && pastDue(task)
+			);
+
+			if (pastTasks) {
+				pastTasks.forEach((task) => {
+					db.collection("users")
+						.doc(currentUser.uid)
+						.collection("tasks")
+						.doc(task.id)
+						.update({
+							category: "past",
+						})
+						.catch((error) => {
+							console.error("Error updating document: ", error);
+						});
+				});
+			}
+		}, 60 * 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, [tasks]);
 
 	return (
 		<Router>
