@@ -8,9 +8,13 @@ import {
 	Modal,
 	Box,
 	ThemeProvider,
+	MenuItem,
+	InputLabel,
+	Select,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import CircleIcon from "@mui/icons-material/Circle";
 import CheckBoxOutlineBlankRoundedIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
 import CheckBoxRoundedIcon from "@mui/icons-material/CheckBoxRounded";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -49,6 +53,7 @@ function Task(props) {
 	// modal
 	const [isModalOpen, setModalOpen] = useState(false);
 	const handleModalClose = () => setModalOpen(false);
+	const [color, setColor] = useState(props.colorId);
 
 	// fixme: DatePicker separated from Task.js?
 	function getNextTimeSlotStart() {
@@ -140,7 +145,7 @@ function Task(props) {
 		scheduledEndDate.setSeconds(0);
 		scheduledEndDate.setMilliseconds(0);
 
-		props.scheduleTask(props.id, scheduledStartDate, scheduledEndDate);
+		props.scheduleTask(props.id, scheduledStartDate, scheduledEndDate, color);
 		setScheduled(true);
 	}
 
@@ -275,6 +280,35 @@ function Task(props) {
 								</div>
 							</div>
 						</LocalizationProvider>
+						<InputLabel id="color-select-label">Color</InputLabel>
+						<Select
+							labelId="color-select-label"
+							id="color-select"
+							value={color}
+							onChange={(event) => setColor(event.target.value)}
+							sx={{ mb: 1 }}
+						>
+							<MenuItem value={1}>
+								<CircleIcon sx={{ color: "#00BE91", mr: 1 }} />
+								Mint
+							</MenuItem>
+							<MenuItem value={2}>
+								<CircleIcon sx={{ color: "#E58F65", mr: 1 }} />
+								Copper
+							</MenuItem>
+							<MenuItem value={3}>
+								<CircleIcon sx={{ color: "#D05353", mr: 1 }} />
+								Red
+							</MenuItem>
+							<MenuItem value={4}>
+								<CircleIcon sx={{ color: "#797596", mr: 1 }} />
+								Lilac
+							</MenuItem>
+							<MenuItem value={5}>
+								<CircleIcon sx={{ color: "#284C69", mr: 1 }} />
+								Blue
+							</MenuItem>
+						</Select>
 						<ThemeProvider theme={theme}>
 							<Button
 								variant="contained"
@@ -388,6 +422,35 @@ function Task(props) {
 										</div>
 									</div>
 								</LocalizationProvider>
+								<InputLabel id="color-select-label">Color</InputLabel>
+								<Select
+									labelId="color-select-label"
+									id="color-select"
+									value={color}
+									onChange={(event) => setColor(event.target.value)}
+									sx={{ mb: 1 }}
+								>
+									<MenuItem value={1}>
+										<CircleIcon sx={{ color: "#00BE91", mr: 1 }} />
+										Mint
+									</MenuItem>
+									<MenuItem value={2}>
+										<CircleIcon sx={{ color: "#E58F65", mr: 1 }} />
+										Copper
+									</MenuItem>
+									<MenuItem value={3}>
+										<CircleIcon sx={{ color: "#D05353", mr: 1 }} />
+										Red
+									</MenuItem>
+									<MenuItem value={4}>
+										<CircleIcon sx={{ color: "#797596", mr: 1 }} />
+										Lilac
+									</MenuItem>
+									<MenuItem value={5}>
+										<CircleIcon sx={{ color: "#284C69", mr: 1 }} />
+										Blue
+									</MenuItem>
+								</Select>
 								<ThemeProvider theme={theme}>
 									<Button
 										className="schedule-modal-button"

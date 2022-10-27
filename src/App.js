@@ -144,7 +144,7 @@ function App() {
 		);
 	}
 
-	function scheduleTask(id, scheduledStart, scheduledEnd) {
+	function scheduleTask(id, scheduledStart, scheduledEnd, color) {
 		const currTask = tasks.find((task) => task.id === id);
 		const pos = currTask.position;
 
@@ -154,6 +154,7 @@ function App() {
 				endDate: scheduledEnd,
 				category: "scheduled",
 				position: 0,
+				colorId: color,
 			},
 			{ merge: true }
 		);

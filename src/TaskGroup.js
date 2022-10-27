@@ -76,6 +76,7 @@ function TaskGroup(props) {
 				endDate={task.endDate}
 				category={task.category}
 				index={index}
+				colorId={task.colorId}
 			/>
 		));
 
@@ -94,6 +95,7 @@ function TaskGroup(props) {
 			endDate={task.endDate}
 			category={task.category}
 			index={task.position}
+			colorId={task.colorId}
 		/>
 	));
 

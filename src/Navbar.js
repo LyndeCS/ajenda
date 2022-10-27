@@ -77,7 +77,6 @@ export default function Navbar(props) {
 	if (props.isMobile && props.scheduleViewActive) {
 		return <></>;
 	} else {
-		console.log("render");
 		return (
 			<ThemeProvider theme={theme}>
 				<HideOnScroll isMobile={props.isMobile}>
