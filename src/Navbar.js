@@ -26,10 +26,18 @@ export default function Navbar(props) {
 		const trigger = useScrollTrigger({
 			target: scrollTarget ? scrollTarget : undefined,
 			threshold: 0,
+			disableHysteresis: true,
 		});
 
 		return (
-			<Slide appear={false} direction="down" in={!trigger}>
+			<Slide
+				appear={false}
+				direction="down"
+				in={!trigger}
+				sx={{
+					visibility: trigger ? "hidden" : "visible",
+				}}
+			>
 				{children}
 			</Slide>
 		);
@@ -69,9 +77,10 @@ export default function Navbar(props) {
 	if (props.isMobile && props.scheduleViewActive) {
 		return <></>;
 	} else {
+		console.log("render");
 		return (
 			<ThemeProvider theme={theme}>
-				<HideOnScroll>
+				<HideOnScroll isMobile={props.isMobile}>
 					<AppBar elevation={2} position={props.isMobile ? "fixed" : "sticky"}>
 						<Toolbar>
 							<div>
