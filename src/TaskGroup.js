@@ -59,7 +59,7 @@ function TaskGroup(props) {
 		props.handleDnd(updatedTasks);
 	}
 
-	const tasks = props.tasks
+	const tasks = orderBy(props.tasks, "startDate")
 		.filter((task) => task.category === props.name)
 		.map((task, index) => (
 			<Task
