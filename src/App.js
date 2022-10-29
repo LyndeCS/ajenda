@@ -12,15 +12,22 @@ import PrivateRoute from "./PrivateRoute";
 import { db } from "./firebase";
 import "./css/App.css";
 
+const GROUPS_DEFAULT = [
+	{ name: "past", collapsed: false, section: "header" },
+	{ name: "unscheduled", collapsed: false, section: "header" },
+	{ name: "scheduled", collapsed: true, section: "footer" },
+	{ name: "completed", collapsed: true, section: "footer" },
+];
+
 function App() {
 	const [tasks, setTasks] = useState([]);
+	const [groups, setGroups] = useState(GROUPS_DEFAULT);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [taskViewActive, setTaskViewActive] = useState(true);
 	const [scheduleViewActive, setScheduleViewActive] = useState(
 		isMobile ? false : true
 	);
 	const { currentUser } = useAuth();
-
 	const [nextPosition, setNextPosition] = useState(1);
 
 	const handleResize = () => {
@@ -37,7 +44,32 @@ function App() {
 		}
 	};
 
+	function handleGroups(e) {
+		let groupName;
+		if (typeof e === "string") {
+			groupName = e;
+		} else {
+			groupName = e.currentTarget.id;
+		}
+		const updatedGroups = groups.map((group) => {
+			if (group.name === groupName) {
+				return {
+					...group,
+					collapsed: !group.collapsed,
+				};
+			}
+			return group;
+		});
+		setGroups(updatedGroups);
+	}
+
 	function addTask(desc) {
+		if (
+			groups.find((group) => group.name === "unscheduled" && group.collapsed)
+		) {
+			handleGroups("unscheduled");
+		}
+
 		const newTask = {
 			desc: desc,
 			completed: false,
@@ -406,6 +438,8 @@ function App() {
 									{taskViewActive && (
 										<TaskView
 											tasks={tasks}
+											groups={groups}
+											handleGroups={handleGroups}
 											addTask={addTask}
 											deleteTask={deleteTask}
 											saveTask={saveTask}
