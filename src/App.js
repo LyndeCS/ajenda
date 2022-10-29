@@ -218,7 +218,7 @@ function App() {
 			.update({
 				completed: false,
 				category: currTask.startDate === "" ? "unscheduled" : "scheduled",
-				position: nextPosition,
+				position: currTask.startDate === "" ? nextPosition : 0,
 			});
 	}
 
