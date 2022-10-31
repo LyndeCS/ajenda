@@ -14,10 +14,9 @@ import { useNavigate } from "react-router-dom";
 import theme from "./theme";
 
 export default function Navbar(props) {
-	const [error, setError] = useState("");
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [scrollTarget, setScrollTarget] = useState(undefined);
-	const { currentUser, logout } = useAuth();
+	const { logout } = useAuth();
 	const navigate = useNavigate();
 
 	function HideOnScroll(props) {
@@ -52,13 +51,11 @@ export default function Navbar(props) {
 	};
 
 	async function handleLogout() {
-		setError("");
-
 		try {
 			await logout();
 			navigate("/login");
 		} catch {
-			setError("Failed to log out");
+			console.log("Failed to log out");
 		}
 	}
 
@@ -79,38 +76,37 @@ export default function Navbar(props) {
 	} else {
 		return (
 			<ThemeProvider theme={theme}>
-				<HideOnScroll isMobile={props.isMobile}>
+				<HideOnScroll>
 					<AppBar elevation={2} position={props.isMobile ? "fixed" : "sticky"}>
 						<Toolbar>
-							<div>
-								<IconButton
-									size="large"
-									edge="start"
-									color="inherit"
-									aria-label="menu"
-									sx={{ mr: 1 }}
-									onClick={handleMenu}
-								>
-									<MenuIcon />
-								</IconButton>
-								<Menu
-									id="menu-appbar"
-									anchorEl={anchorEl}
-									anchorOrigin={{
-										vertical: "bottom",
-										horizontal: "left",
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: "bottom",
-										horizontal: "left",
-									}}
-									open={Boolean(anchorEl)}
-									onClose={handleClose}
-								>
-									<MenuItem onClick={handleLogout}>Log Out</MenuItem>
-								</Menu>
-							</div>
+							<IconButton
+								size="large"
+								edge="start"
+								color="inherit"
+								aria-label="menu"
+								sx={{ mr: 1 }}
+								onClick={handleMenu}
+							>
+								<MenuIcon />
+							</IconButton>
+							<div id="appbar-menu-anchor"></div>
+							<Menu
+								id="menu-appbar"
+								anchorEl={anchorEl}
+								anchorOrigin={{
+									vertical: "bottom",
+									horizontal: "left",
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: "bottom",
+									horizontal: "left",
+								}}
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+							>
+								<MenuItem onClick={handleLogout}>Log Out</MenuItem>
+							</Menu>
 							<Typography
 								variant="h6"
 								component="div"

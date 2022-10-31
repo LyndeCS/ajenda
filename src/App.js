@@ -30,20 +30,6 @@ function App() {
 	const { currentUser } = useAuth();
 	const [nextPosition, setNextPosition] = useState(1);
 
-	const handleResize = () => {
-		if (window.innerWidth < 768) {
-			if (!isMobile) {
-				setIsMobile(true);
-				setScheduleViewActive(false);
-				setTaskViewActive(true);
-			}
-		} else if (window.innerWidth > 768) {
-			setIsMobile(false);
-			setTaskViewActive(true);
-			setScheduleViewActive(true);
-		}
-	};
-
 	function handleGroups(e) {
 		let groupName;
 		if (typeof e === "string") {
@@ -375,6 +361,19 @@ function App() {
 	}, [currentUser]);
 
 	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth < 768) {
+				if (!isMobile) {
+					setIsMobile(true);
+					setScheduleViewActive(false);
+					setTaskViewActive(true);
+				}
+			} else if (window.innerWidth > 768) {
+				setIsMobile(false);
+				setTaskViewActive(true);
+				setScheduleViewActive(true);
+			}
+		};
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, [isMobile]);
@@ -415,11 +414,11 @@ function App() {
 						});
 				});
 			}
-		}, 5 * 1000);
+		}, 60 * 1000);
 		return () => {
 			clearInterval(interval);
 		};
-	}, [tasks]);
+	}, [tasks, currentUser]);
 
 	return (
 		<Router>

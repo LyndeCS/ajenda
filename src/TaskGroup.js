@@ -7,8 +7,6 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { range, orderBy } from "lodash";
 
 function TaskGroup(props) {
-	//fixme: setCollapsed is never used
-	const [isCollapsed, setCollapsed] = useState(props.collapsed);
 	const [dndTaskList, setDndTaskList] = useState(
 		props.tasks.filter((task) => task.category === "unscheduled")
 	);
@@ -51,9 +49,8 @@ function TaskGroup(props) {
 					updatedTasks.push(task);
 					return task;
 				}
-			} else {
-				return task;
 			}
+			return task;
 		});
 		setDndTaskList(reOrderedTasklist);
 		props.handleDnd(updatedTasks);
@@ -166,8 +163,7 @@ function TaskGroup(props) {
 		</DragDropContext>
 	);
 
-	//return isCollapsed ? collapsedTemplate : expandedTemplate;
-	if (isCollapsed) {
+	if (props.collapsed) {
 		return collapsedTemplate;
 	} else if (props.name === "unscheduled") {
 		return dndExpandedTemplate;

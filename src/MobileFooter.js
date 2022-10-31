@@ -9,7 +9,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
-import { isMobile, isDesktop } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import useDetectKeyboardOpen from "use-detect-keyboard-open";
 
 const taskViewButtonStyle = {
@@ -55,7 +55,6 @@ const StyledFab = styled(Fab)({
 
 function MobileFooter(props) {
 	const handleAddTaskButton = (e) => {
-		//fixme: should expand "Unscheduled" group if it is collapsed
 		props.addTask("");
 	};
 	const handleTaskViewButton = (e) => {

@@ -39,12 +39,12 @@ export default function Login() {
 			} else {
 				await login(emailRef.current.value, passwordRef.current.value);
 			}
+			setLoading(false);
 			navigate("/");
 		} catch {
 			setError("Failed to sign in");
+			setLoading(false);
 		}
-
-		setLoading(false);
 	}
 
 	return (
