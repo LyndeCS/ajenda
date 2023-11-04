@@ -121,9 +121,8 @@ export default function Login() {
 									backgroundColor: "black",
 								},
 							}}
-							endIcon={<NoAccountsIcon />}
 						>
-							Sign In Anonymously
+							Continue without Signing In
 						</Button>
 						<Grid container>
 							<Grid item xs>
